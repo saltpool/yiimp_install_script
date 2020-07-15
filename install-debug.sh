@@ -173,21 +173,19 @@
     sudo apt -y update
 
     if [[ ("$DISTRO" == "16") ]]; then
-    sudo apt -y install php7.2-fpm php7.2-opcache php7.2 php7.2-common php7.2-gd php7.2-mysql php7.2-imap php7.2-cli \
+    apt_install php7.2-fpm php7.2-opcache php7.2 php7.2-common php7.2-gd php7.2-mysql php7.2-imap php7.2-cli \
     php7.2-cgi php-pear php-auth imagemagick libruby php7.2-curl php7.2-intl php7.2-pspell mcrypt\
-    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php-memcache php-imagick php-gettext php7.2-zip php7.$
-    #sudo phpenmod mcrypt
-    #sudo phpenmod mbstring
+    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php-memcache php-imagick php-gettext php7.2-zip php7.2-mbstring
+    #hide_output sudo phpenmod mcrypt
+    #hide_output sudo phpenmod mbstring
     else
-    sudo apt -y install php7.2-fpm php7.2-opcache php7.2 php7.2-common php7.2-gd php7.2-mysql php7.2-imap php7.2-cli \
-    php7.2-cgi php-pear imagemagick libruby php7.2-curl php7.2-intl php7.2-pspell mcrypt\
-    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php-memcache php-imagick php-gettext php7.2-zip php7.$
-    libpsl-dev libnghttp2-dev
+    apt_install php7.2-fpm php7.2-opcache php7.2 php7.2-common php7.2-gd php7.2-mysql php7.2-imap php7.2-cli \
+    php7.2-cgi php-pear php-auth imagemagick libruby php7.2-curl php7.2-intl php7.2-pspell mcrypt\
+    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php-memcache php-imagick php-gettext php7.2-zip php7.2-mbstring
     fi
     sleep 5
-    sudo systemctl start php7.2-fpm
+    hide_output sudo systemctl start php7.2-fpm
     sudo systemctl status php7.2-fpm | sed -n "1,3p"
-    sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
