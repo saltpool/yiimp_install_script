@@ -375,19 +375,19 @@
     cd ~
     git clone --recursive https://github.com/Kudaraidee/yiimp.git
     cd $HOME/yiimp/blocknotify
-    sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
-    sudo make -j$((`nproc`+1))
+    sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
+    make -j$((`nproc`+1))
     
     # Compil iniparser
     cd $HOME/yiimp/stratum/iniparser
-    sudo make -j$((`nproc`+1))
+    make -j$((`nproc`+1))
     
     # Compil Stratum
     cd $HOME/yiimp/stratum
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
-    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
+    sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
     fi
-    sudo make -j$((`nproc`+1))
+    make -j$((`nproc`+1))
     
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
