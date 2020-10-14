@@ -14,7 +14,7 @@
     output() {
     printf "\E[0;33;40m"
     echo $1
-    printf "\E[0m"
+    printf "\E[0m"ku
     }
 
     displayErr() {
@@ -150,10 +150,10 @@
     rootpasswd=$(openssl rand -base64 12)
     export DEBIAN_FRONTEND="noninteractive"
     sudo apt -y install mariadb-server
-    sudo systemctl start mysql
-    sudo systemctl enable mysql
+    sudo systemctl enable mariadb.service
+    sudo systemctl start mariadb.service
     sleep 5
-    sudo systemctl status mysql | sed -n "1,3p"
+    sudo systemctl status mariadb | sed -n "1,3p"
     sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -373,7 +373,7 @@
     
     # Compil Blocknotify
     cd ~
-    git clone https://github.com/Kudaraidee/yiimp.git
+    git clone --recursive https://github.com/Kudaraidee/yiimp.git
     cd $HOME/yiimp/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     sudo make -j$((`nproc`+1))
