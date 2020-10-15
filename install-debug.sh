@@ -380,9 +380,15 @@
     make -j$((`nproc`+1))
     
     # Compil Stratum
-    cd $HOME/yiimp/stratum
+    cd $HOME/yiimp/stratum/
+    git submodule init && git submodule update 
+    make -C algos
+    make -C sha3
+    make -C iniparser
+    cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
+    cd $HOME/yiimp/stratum/
     make -j$((`nproc`+1))
-    gcc -no-pie stratum.o db.o coind.o coind_aux.o coind_template.o coind_submit.o util.o list.o rpc.o job.o job_send.o job_core.o merkle.o share.o socket.o coinbase.o client.o client_submit.o client_core.o client_difficulty.o remote.o remote_template.o user.o object.o json.o base58.o rpc_curl.o iniparser/libiniparser.a algos/libalgos.a sha3/libhash.a -Isecp256k1/include secp256k1/.libs/libsecp256k1.a -lpthread -lgmp -lm -lstdc++ -lssl -lcrypto  -lmysqlclient -O2 mysql_config --libs -L/usr/lib/x86_64-linux-gnu/mit-krb5 -lcurl -lnghttp2 -lidn2 -lrtmp -lpsl -lnettle -lgnutls -Wl,-Bsymbolic-functions -Wl,-z,relro -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err -llber -lldap -llber -lz -o stratum
+    
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
     sudo sed -i 's/AdminRights/'AdminPanel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
