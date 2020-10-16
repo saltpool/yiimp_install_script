@@ -387,6 +387,9 @@
     make -C iniparser
     cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
     cd $HOME/yiimp/stratum/
+    if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
+    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
+    fi
     make -j$((`nproc`+1))
     
     # Copy Files (Blocknotify,iniparser,Stratum)
