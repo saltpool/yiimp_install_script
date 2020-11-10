@@ -959,7 +959,7 @@
     cd yiimp/sql
     
     # Import sql dump
-    sudo zcat 2016-04-03-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+    sudo zcat 2020-11-10-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
     
     # Oh the humanity!
     sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
@@ -972,10 +972,12 @@
     sudo mysql --defaults-group-suffix=host1 --force < 2016-11-23-coins.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-02-05-benchmarks.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-03-31-earnings_index.sql
+    sudo mysql --defaults-group-suffix=host1 --force < 2020-06-03-blocks.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-05-accounts_case_swaptime.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-06-payouts_coinid_memo.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-09-notifications.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-10-bookmarks.sql
+    sudo mysql --defaults-group-suffix=host1 --force < 2018-09-22-workers.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
@@ -992,9 +994,7 @@
     # Make config file
     echo '
     <?php
-
-    ini_set('"'"'date.timezone'"'"', '"'"'UTC'"'"');
-
+    ini_set('"'"'date.timezone'"'"', '"'"'CET'"'"');
     define('"'"'YAAMP_LOGS'"'"', '"'"'/var/log/yiimp'"'"');
     define('"'"'YAAMP_HTDOCS'"'"', '"'"'/var/web'"'"');
         
@@ -1009,6 +1009,8 @@
     define('"'"'YAAMP_RENTAL'"'"', false);
     
     define('"'"'YAAMP_LIMIT_ESTIMATE'"'"', false);
+    
+    define('"'"'YAAMP_FEES_SOLO'"'"', 0.5);
     
     define('"'"'YAAMP_FEES_MINING'"'"', 0.5);
     define('"'"'YAAMP_FEES_EXCHANGE'"'"', 2);
@@ -1037,7 +1039,7 @@
     define('"'"'YAAMP_CREATE_NEW_COINS'"'"', false);
     define('"'"'YAAMP_NOTIFY_NEW_COINS'"'"', false);
     
-    define('"'"'YAAMP_DEFAULT_ALGO'"'"', '"'"'x11'"'"');
+    define('"'"'YAAMP_DEFAULT_ALGO'"'"', '"'"'all'"'"');
     
     define('"'"'YAAMP_USE_NGINX'"'"', true);
     
@@ -1068,7 +1070,7 @@
     define('"'"'NICEHASH_DEPOSIT_AMOUNT'"'"','"'"'0.01'"'"');
     
     $cold_wallet_table = array(
-    '"'"'1PqjApUdjwU9k4v1RDWf6XveARyEXaiGUz'"'"' => 0.10,
+	'"'"'1PqjApUdjwU9k4v1RDWf6XveARyEXaiGUz'"'"' => 0.10,
     );
     
     // Sample fixed pool fees
@@ -1077,15 +1079,23 @@
         '"'"'scrypt'"'"' => 20.0,
         '"'"'sha256'"'"' => 5.0,
      );
+     
+     // Sample fixed pool fees solo
+    $configFixedPoolFeesSolo = array(
+        '"'"'zr5'"'"' => 2.0,
+        '"'"'scrypt'"'"' => 20.0,
+        '"'"'sha256'"'"' => 5.0,
+        
+    );
     
     // Sample custom stratum ports
     $configCustomPorts = array(
-    //  '"'"'x11'"'"' => 7000,
+    //	'"'"'x11'"'"' => 7000,
     );
     
     // mBTC Coefs per algo (default is 1.0)
     $configAlgoNormCoef = array(
-    //  '"'"'x11'"'"' => 5.0,
+    //	'"'"'x11'"'"' => 5.0,
     );
     ' | sudo -E tee /var/web/serverconfig.php >/dev/null 2>&1
 
