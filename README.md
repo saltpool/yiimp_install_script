@@ -24,6 +24,8 @@ Connect on your VPS =>
 - adduser pool (pool it's just an example...)
 - adduser pool sudo
 - su - pool
+- exit 
+- su - pool
 - sudo apt -y install git
 - git clone https://github.com/eskal/yiimp_install_scrypt.git
 - cd yiimp_install_scrypt/
