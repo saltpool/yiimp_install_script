@@ -182,7 +182,7 @@
     else
     sudo apt -y install php7.2-fpm php7.2-opcache php7.2 php7.2-common php7.2-gd php7.2-mysql php7.2-imap php7.2-cli \
     php7.2-cgi php-pear imagemagick libruby php7.2-curl php7.2-intl php7.2-pspell mcrypt\
-    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php-memcache php-imagick php-gettext php7.2-zip php7.2-mbstring \
+    php7.2-recode php7.2-sqlite3 php7.2-tidy php7.2-xmlrpc php7.2-xsl memcached php7.2-memcache php7.2-memcached php-imagick php-gettext php7.2-zip php7.2-mbstring \
     libpsl-dev libnghttp2-dev
     fi
     sleep 5
