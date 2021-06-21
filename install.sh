@@ -959,7 +959,7 @@
     cd yiimp/sql
     
     # Import sql dump
-    sudo zcat 2020-11-10-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
+    sudo zcat 2021-06-21-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
     
     # Oh the humanity!
     sudo mysql --defaults-group-suffix=host1 --force < 2016-04-24-market_history.sql
