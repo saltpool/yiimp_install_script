@@ -981,6 +981,7 @@
     sudo mysql --defaults-group-suffix=host1 --force < 2017-11-segwit.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
+    sudo mysql --defaults-group-suffix=host1 --force < 2019-03-coins_thepool_life.sql
     echo -e "$GREEN Done...$COL_RESET"
         
     
