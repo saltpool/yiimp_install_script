@@ -515,6 +515,11 @@
         location ~ /.well-known {
         allow all;
         }
+		location ^~ /list-algos/ {
+		deny all;
+			access_log off;
+			return 301 https://$server_name;
+		}
         location /phpmyadmin {
         root /usr/share/;
         index index.php;
@@ -534,6 +539,7 @@
 
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
+	sudo ln -s /var/stratum/config /var/web/list-algos
     sudo systemctl reload php7.3-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
@@ -725,6 +731,11 @@
         location ~ /.well-known {
         allow all;
         }
+		location ^~ /list-algos/ {
+		deny all;
+			access_log off;
+			return 301 https://$server_name;
+		}
         location /phpmyadmin {
         root /usr/share/;
         index index.php;
@@ -744,6 +755,7 @@
 
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
+	sudo ln -s /var/stratum/config /var/web/list-algos
     sudo systemctl reload php7.3-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
@@ -843,14 +855,16 @@
         location ~ \.php$ {
             return 404;
         }
-        location ~ \.sh {
-        return 404;
+ 
+		location ~ \.sh {
+			return 404;
         }
 
-            location ~ /\.ht {
-                deny all;
-            }
-        location /phpmyadmin {
+		location ~ /\.ht {
+			deny all;
+		}
+		
+		location /phpmyadmin {
         root /usr/share/;
         index index.php;
         try_files $uri $uri/ =404;
@@ -982,6 +996,7 @@
     sudo mysql --defaults-group-suffix=host1 --force < 2018-01-stratums_ports.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2018-02-coins_getinfo.sql
     sudo mysql --defaults-group-suffix=host1 --force < 2019-03-coins_thepool_life.sql
+    sudo mysql --defaults-group-suffix=host1 --force < 2022-10-14-shares_solo.sql
     echo -e "$GREEN Done...$COL_RESET"
 
 
