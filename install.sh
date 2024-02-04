@@ -889,7 +889,7 @@
     sleep 3
 
     cd ~
-    cd yiimp/sql
+    cd yiimp-cly/sql
 
     # Import sql dump
     sudo zcat 2020-11-10-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1
