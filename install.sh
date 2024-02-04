@@ -1,14 +1,15 @@
 #!/bin/bash
 ################################################################################
 # Original Author:   Kudaraidee
-# Modified by : Delari (https://github.com/xavatar/yiimp_install_scrypt)
-
+# Modified by: Delari (https://github.com/xavatar/yiimp_install_scrypt)
+# Modified by: Craiglyoung
 # Program:
-#   Install yiimp on Ubuntu 16.04/18.04 running Nginx, MariaDB, and php7.3
-#   v0.3 (update May, 2022)
+#   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and php7.4
+#   v0.1 (update - February 2024)
 #
 ################################################################################
 
+   script_version='v0.1'
 
     output() {
     printf "\E[0;33;40m"
@@ -40,16 +41,14 @@
 
     source /etc/functions.sh
 
-
     clear
     echo
     echo -e "$GREEN************************************************************************$COL_RESET"
-    echo -e "$GREEN Yiimp Install Script v0.3 $COL_RESET"
-    echo -e "$GREEN Install yiimp on Ubuntu 16.04/18.04 running Nginx, MariaDB, and php7.3 $COL_RESET"
+    echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
+    echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and php7.4 $COL_RESET"
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo
     sleep 3
-
 
     # Update package and Upgrade Ubuntu
     echo
@@ -65,11 +64,9 @@
     sudo apt -y install dialog python3 python3-pip acl nano apt-transport-https
     echo -e "$GREEN Done...$COL_RESET"
 
-
     source conf/prerequisite.sh
     sleep 3
     source conf/getip.sh
-
 
     echo 'PUBLIC_IP='"${PUBLIC_IP}"'
     PUBLIC_IPV6='"${PUBLIC_IPV6}"'
@@ -80,17 +77,16 @@
     echo
     echo -e "$RED Make sure you double check before hitting enter! Only one shot at these! $COL_RESET"
     echo
-    #read -e -p "Enter time zone (e.g. America/New_York) : " TIME
-    read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (185.22.24.26)) : " server_name
-    read -e -p "Are you using a subdomain (mycryptopool.example.com?) [y/N] : " sub_domain
+    read -e -p "Enter time zone (e.g. Australia/Brisbane) : " TIME
+    read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (xxx.xxx.xxx.xxx)) : " server_name
+    read -e -p "Are you using a subdomain (pool.example.com?) [y/N] : " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com) : " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N] : " BTC
     #read -e -p "Please enter a new location for /site/adminRights this is to customize the Admin Panel entrance url (e.g. myAdminpanel) : " admin_panel
-    read -e -p "Enter the Public IP of the system you will use to access the admin panel (IP of YOUR PC where need to be access to Panel) : " Public
+    read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel) : " Public
     read -e -p "Install Fail2ban? [Y/n] : " install_fail2ban
     read -e -p "Install UFW and configure ports? [Y/n] : " UFW
     read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
-
 
     # Switch Aptitude
     #echo
@@ -99,7 +95,6 @@
     #sleep 3
     #sudo apt -y install aptitude
     #echo -e "$GREEN Done...$COL_RESET $COL_RESET"
-
 
     # Installing Nginx
     echo
@@ -126,7 +121,6 @@
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Making Nginx a bit hard
     echo 'map $http_user_agent $blockedagent {
     default         0;
@@ -137,7 +131,6 @@
     ~*bandit        1;
     }
     ' | sudo -E tee /etc/nginx/blockuseragents.rules >/dev/null 2>&1
-
 
     # Installing Mariadb
     echo
@@ -158,11 +151,10 @@
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
-
-    # Installing Installing php7.3
+    # Installing Installing php7.4
     echo
     echo
-    echo -e "$CYAN => Installing php7.3 : $COL_RESET"
+    echo -e "$CYAN => Installing php7.4 : $COL_RESET"
     echo
     sleep 3
 
@@ -172,26 +164,22 @@
     fi
     sudo apt -y update
 
-    if [[ ("$DISTRO" == "16") ]]; then
-    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear php-auth imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring
-    #sudo phpenmod mcrypt
-    #sudo phpenmod mbstring
-    else
-    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php7.3-memcache php7.3-memcached php-imagick php-gettext php7.3-zip php7.3-mbstring \
-    libpsl-dev libnghttp2-dev
+    if [[ ("$DISTRO" == "22") ]]; then
+     apt_install php7.4-fpm php7.4-opcache php7.4 php7.4-common php7.4-gd php7.4-mysql php7.4-imap php7.4-cli \
+    php7.4-cgi php-pear imagemagick libruby php7.4-curl php7.4-intl php7.4-pspell mcrypt\
+    recode php7.4-sqlite3 php7.4-tidy php7.4-xmlrpc php7.4-xsl memcached php-imagick php-php-gettext php7.4-zip php7.4-mbstring \
+    libpsl-dev libnghttp2-dev php7.4-memcache php7.4-memcached
+    else  
+     echo -e "$RED Aborting, wrong O/S. Must be Ubuntu 22.04."
+     exit 1
     fi
+    
     sleep 5
-    sudo systemctl start php7.3-fpm
-    sudo systemctl status php7.3-fpm | sed -n "1,3p"
+    sudo systemctl start php7.4-fpm
+    sudo systemctl status php7.4-fpm | sed -n "1,3p"
     sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
-
-
 
     # Installing other needed files
     echo
@@ -206,7 +194,6 @@
     echo -e "$GREEN Done...$COL_RESET"
     sleep 3
 
-
     # Installing Package to compile crypto currency
     echo
     echo
@@ -214,16 +201,16 @@
     echo
     sleep 3
 
-    sudo apt -y install software-properties-common build-essential
-    sudo apt -y install libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
-    sudo apt -y install libminiupnpc10 libzmq5
-    sudo apt -y install libcanberra-gtk-module libqrencode-dev libzmq3-dev
-    sudo apt -y install libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
-    sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    sudo apt install -y software-properties-common build-essential
+    sudo apt install -y libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
+    sudo apt install -y libminiupnpc17 libzmq5
+    sudo apt install -y libcanberra-gtk-module libqrencode-dev libzmq3-dev libminizip-dev
+    sudo apt install -y libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
+    sudo apt install -y libssh-dev libbrotli-dev
+    sudo add-apt-repository -y ppa:luke-jr/bitcoincore
     sudo apt -y update
-    sudo apt -y install libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
+    sudo apt install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
     echo -e "$GREEN Done...$COL_RESET"
-
 
     # Generating Random Passwords
     password=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
@@ -262,13 +249,11 @@
     echo
     sleep 3
 
-
     if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
     sudo apt -y install fail2ban
     sleep 5
     sudo systemctl status fail2ban | sed -n "1,3p"
         fi
-
 
     if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
     sudo apt -y install ufw
@@ -278,69 +263,13 @@
     sudo ufw allow http
     sudo ufw allow https
     sudo ufw allow 3333/tcp
-    sudo ufw allow 3339/tcp
-    sudo ufw allow 3334/tcp
-    sudo ufw allow 3433/tcp
-    sudo ufw allow 3555/tcp
-    sudo ufw allow 3556/tcp
-    sudo ufw allow 3573/tcp
-    sudo ufw allow 3535/tcp
-    sudo ufw allow 3533/tcp
-    sudo ufw allow 3553/tcp
-    sudo ufw allow 3633/tcp
-    sudo ufw allow 3733/tcp
-    sudo ufw allow 3636/tcp
-    sudo ufw allow 3737/tcp
-    sudo ufw allow 3739/tcp
-    sudo ufw allow 3747/tcp
-    sudo ufw allow 3833/tcp
-    sudo ufw allow 3933/tcp
-    sudo ufw allow 4033/tcp
-    sudo ufw allow 4133/tcp
-    sudo ufw allow 4233/tcp
-    sudo ufw allow 4234/tcp
-    sudo ufw allow 4333/tcp
-    sudo ufw allow 4433/tcp
-    sudo ufw allow 4533/tcp
-    sudo ufw allow 4553/tcp
-    sudo ufw allow 4633/tcp
-    sudo ufw allow 4733/tcp
-    sudo ufw allow 4833/tcp
-    sudo ufw allow 4933/tcp
-    sudo ufw allow 5033/tcp
-    sudo ufw allow 5133/tcp
-    sudo ufw allow 5233/tcp
-    sudo ufw allow 5333/tcp
-    sudo ufw allow 5433/tcp
-    sudo ufw allow 5533/tcp
-    sudo ufw allow 5733/tcp
-    sudo ufw allow 5743/tcp
-    sudo ufw allow 3252/tcp
-    sudo ufw allow 5755/tcp
-    sudo ufw allow 5766/tcp
-    sudo ufw allow 5833/tcp
-    sudo ufw allow 5933/tcp
-    sudo ufw allow 6033/tcp
-    sudo ufw allow 5034/tcp
-    sudo ufw allow 6133/tcp
-    sudo ufw allow 6233/tcp
-    sudo ufw allow 6333/tcp
-    sudo ufw allow 6433/tcp
-    sudo ufw allow 7433/tcp
-    sudo ufw allow 7070/tcp
-    sudo ufw allow 8333/tcp
-    sudo ufw allow 8463/tcp
-    sudo ufw allow 8433/tcp
-    sudo ufw allow 8533/tcp
     sudo ufw --force enable
     sleep 5
     sudo systemctl status ufw | sed -n "1,3p"
     fi
 
-
     echo
     echo -e "$GREEN Done...$COL_RESET"
-
 
     # Installing PhpMyAdmin
     echo
@@ -358,7 +287,6 @@
     sudo apt -y install phpmyadmin
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Installing Yiimp
     echo
     echo
@@ -368,43 +296,42 @@
     echo
     sleep 3
 
-
     # Generating Random Password for stratum
     blckntifypass=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
     # Compil Blocknotify
     cd ~
-    git clone https://github.com/Kudaraidee/yiimp.git
-    cd $HOME/yiimp/blocknotify
+    git clone https://github.com/craiglyoung/yiimp-cly.git
+    cd $HOME/yiimp-cly/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
 
-    # Compil Stratum
-    cd $HOME/yiimp/stratum/
+    # Compile Stratum
+    cd $HOME/yiimp-cly/stratum/
     git submodule init && git submodule update
     make -C algos
     make -C sha3
     make -C iniparser
     cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
-    cd $HOME/yiimp/stratum/
+    cd $HOME/yiimp-cly/stratum/
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
-    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
+    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp-cly/stratum/Makefile
     fi
     make -j$((`nproc`+1))
 
     # Copy Files (Blocknotify,iniparser,Stratum)
-    cd $HOME/yiimp
-    sudo sed -i 's/AdminRights/'AdminPanel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
-    sudo cp -r $HOME/yiimp/web /var/
+    cd $HOME/yiimp-cly
+    sudo sed -i 's/AdminRights/'AdminPanel'/' $HOME/yiimp-cly/web/yaamp/modules/site/SiteController.php
+    sudo cp -r $HOME/yiimp-cly/web /var/
     sudo mkdir -p /var/stratum
-    cd $HOME/yiimp/stratum
+    cd $HOME/yiimp-cly/stratum
     sudo cp -a config.sample/. /var/stratum/config
     sudo cp -r stratum /var/stratum
     sudo cp -r run.sh /var/stratum
-    cd $HOME/yiimp
-    sudo cp -r $HOME/yiimp/bin/. /bin/
-    sudo cp -r $HOME/yiimp/blocknotify/blocknotify /usr/bin/
-    sudo cp -r $HOME/yiimp/blocknotify/blocknotify /var/stratum/
+    cd $HOME/yiimp-cly
+    sudo cp -r $HOME/yiimp-cly/bin/. /bin/
+    sudo cp -r $HOME/yiimp-cly/blocknotify/blocknotify /usr/bin/
+    sudo cp -r $HOME/yiimp-cly/blocknotify/blocknotify /var/stratum/
     sudo mkdir -p /etc/yiimp
     sudo mkdir -p /$HOME/backup/
     #fixing yiimp
@@ -426,23 +353,21 @@
 
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Update Timezone
     echo
     echo
     echo -e "$CYAN => Update default timezone. $COL_RESET"
     echo
 
-    echo -e " Setting TimeZone to UTC...$COL_RESET"
+    echo -e " Setting TimeZone to $TIME...$COL_RESET"
     if [ ! -f /etc/timezone ]; then
-    echo "Setting timezone to UTC."
-    echo "Etc/UTC" > sudo /etc/timezone
+    echo "Setting timezone to $TIME."
+    echo $TIME > sudo /etc/timezone
     sudo systemctl restart rsyslog
     fi
     sudo systemctl status rsyslog | sed -n "1,3p"
     echo
     echo -e "$GREEN Done...$COL_RESET"
-
 
     # Creating webserver initial config file
     echo
@@ -491,7 +416,7 @@
 
         location ~ ^/index\.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -528,7 +453,7 @@
             deny all;
       }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -540,12 +465,11 @@
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
 	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php7.3-fpm.service
+    sudo systemctl reload php7.4-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
     if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
-
 
     # Install SSL (with SubDomain)
     echo
@@ -622,7 +546,7 @@
 
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -653,7 +577,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -664,10 +588,9 @@
     ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
     fi
 
-    sudo systemctl reload php7.3-fpm.service
+    sudo systemctl reload php7.4-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
-
 
     else
     echo 'include /etc/nginx/blockuseragents.rules;
@@ -699,7 +622,7 @@
         error_log /var/log/nginx/'"${server_name}"'.app-error.log;
 
         # allow larger file uploads and longer script runtimes
-    client_body_buffer_size  50k;
+        client_body_buffer_size  50k;
         client_header_buffer_size 50k;
         client_max_body_size 50k;
         large_client_header_buffers 2 50k;
@@ -707,7 +630,7 @@
 
         location ~ ^/index\.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -744,7 +667,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -756,10 +679,9 @@
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
 	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php7.3-fpm.service
+    sudo systemctl reload php7.4-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
-
 
     if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
 
@@ -807,7 +729,7 @@
             error_log  /var/log/nginx/'"${server_name}"'.app-error.log;
 
             # allow larger file uploads and longer script runtimes
-    client_body_buffer_size  50k;
+        client_body_buffer_size  50k;
         client_header_buffer_size 50k;
         client_max_body_size 50k;
         large_client_header_buffers 2 50k;
@@ -836,10 +758,9 @@
         rewrite ^/(.*)$ /index.php?r=$1;
         }
 
-
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -872,7 +793,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -885,10 +806,9 @@
     echo -e "$GREEN Done...$COL_RESET"
 
     fi
-    sudo systemctl reload php7.3-fpm.service
+    sudo systemctl reload php7.4-fpm.service
     sudo systemctl restart nginx.service
     fi
-
 
     # Config Database
     echo
@@ -959,7 +879,6 @@
 
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Peforming the SQL import
     echo
     echo
@@ -1000,7 +919,6 @@
     sudo mysql --defaults-group-suffix=host1 --force < 2022-10-29-blocks_effort.sql
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Generating a basic Yiimp serverconfig.php
     echo
     echo
@@ -1011,7 +929,7 @@
     # Make config file
     echo '
     <?php
-    ini_set('"'"'date.timezone'"'"', '"'"'CET'"'"');
+    ini_set('"'"'date.timezone'"'"', '"'"''"${TIME}"''"'"');
     define('"'"'YAAMP_LOGS'"'"', '"'"'/var/log/yiimp'"'"');
     define('"'"'YAAMP_HTDOCS'"'"', '"'"'/var/web'"'"');
 
@@ -1081,9 +999,9 @@
     define('"'"'EXCH_AUTO_WITHDRAW'"'"', 0.3);
 
     // nicehash keys deposit account & amount to deposit at a time
-    define('"'"'NICEHASH_API_KEY'"'"','"'"'f96c65a7-3d2f-4f3a-815c-cacf00674396'"'"');
-    define('"'"'NICEHASH_API_ID'"'"','"'"'825979'"'"');
-    define('"'"'NICEHASH_DEPOSIT'"'"','"'"'3ABoqBjeorjzbyHmGMppM62YLssUgJhtuf'"'"');
+    define('"'"'NICEHASH_API_KEY'"'"','"'"'xxxx'"'"');
+    define('"'"'NICEHASH_API_ID'"'"','"'"'xxxx'"'"');
+    define('"'"'NICEHASH_DEPOSIT'"'"','"'"'xxxx'"'"');
     define('"'"'NICEHASH_DEPOSIT_AMOUNT'"'"','"'"'0.01'"'"');
 
     $cold_wallet_table = array(
@@ -1118,7 +1036,6 @@
 
     echo -e "$GREEN Done...$COL_RESET"
 
-
     # Updating stratum config files with database connection info
     echo
     echo
@@ -1135,7 +1052,6 @@
     sudo sed -i 's/password = patofpaq/password = '$password2'/g' *.conf
     cd ~
     echo -e "$GREEN Done...$COL_RESET"
-
 
     # Final Directory permissions
     echo
@@ -1165,9 +1081,8 @@
     sudo chgrp www-data /var/yiimp -R
     sudo chmod 775 /var/yiimp -R
 
-
     #Add to contrab screen-scrypt
-    (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-scrypt.sh") | crontab -
+    (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-script.sh") | crontab -
 
     #fix error screen main "service"
     sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
@@ -1178,7 +1093,7 @@
     sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #Misc
-    sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
+    sudo mv $HOME/yiimp-cly/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
     sudo rm -rf /var/log/nginx/*
 
     #Hold update OpenSSL
@@ -1191,9 +1106,8 @@
     sudo systemctl status mysql | sed -n "1,3p"
     sudo systemctl restart nginx.service
     sudo systemctl status nginx | sed -n "1,3p"
-    sudo systemctl restart php7.3-fpm.service
-    sudo systemctl status php7.3-fpm | sed -n "1,3p"
-
+    sudo systemctl restart php7.4-fpm.service
+    sudo systemctl status php7.4-fpm | sed -n "1,3p"
 
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -1203,7 +1117,7 @@
     echo
     echo
     echo -e "$GREEN***************************$COL_RESET"
-    echo -e "$GREEN Yiimp Install Script v0.2 $COL_RESET"
+    echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
     echo -e "$GREEN Finish !!! $COL_RESET"
     echo -e "$GREEN***************************$COL_RESET"
     echo
@@ -1225,10 +1139,10 @@
     echo -e "$CYAN TUTO Youtube : https://www.youtube.com/watch?v=qE0rhfJ1g2k $COL_RESET"
     echo
     echo -e "$RED***************************************************$COL_RESET"
-    echo -e "$RED YOU MUST REBOOT NOW  TO FINALIZE INSTALLATION !!! $COL_RESET"
+    echo -e "$RED YOU MUST REBOOT NOW TO FINALIZE INSTALLATION !!!  $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo -e "$RED if u have white page blank on site check          $COL_RESET"
-    echo -e "$RED php7.3-memcache | php7.3-memcached | php7.3-fpm   $COL_RESET"
+    echo -e "$RED php7.4-memcache | php7.4-memcached | php7.4-fpm   $COL_RESET"
     echo -e "$RED try just restart them first...                    $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo
