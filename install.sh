@@ -173,6 +173,8 @@
      echo -e "$RED Aborting, wrong O/S. Must be Ubuntu 22.04."
      exit 1
     fi
+
+    sudo update-alternatives --set php /usr/bin/php7.3
     
     sleep 5
     sudo systemctl start php7.3-fpm
