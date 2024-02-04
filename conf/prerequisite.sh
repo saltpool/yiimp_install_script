@@ -10,11 +10,9 @@ echo
 echo -e "$CYAN => Check prerequisite : $COL_RESET"
 echo
 
-if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
-  DISTRO=18
+if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
+  DISTRO=22
   sudo chmod g-w /etc /etc/default /usr
-else [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" != "Ubuntu 16.04 LTS" ];
-  DISTRO=16
 fi
 
 #TOTAL_PHYSICAL_MEM=$(head -n 1 /proc/meminfo | awk '{print $2}')
@@ -22,7 +20,7 @@ fi
 #  if [ ! -d /vagrant ]; then
 #    TOTAL_PHYSICAL_MEM=$(expr \( \( $TOTAL_PHYSICAL_MEM \* 1024 \) / 1000 \) / 1000)
 #    echo "Your Mining Pool Server needs more memory (RAM) to function properly."
-#    echo "Please provision a machine with at least 1536 GB, 6 GB recommended."
+#    echo "Please provision a machine with at least 1536 MB, 6 GB recommended."
 #    echo "This machine has $TOTAL_PHYSICAL_MEM MB memory."
 #    exit
 #  fi
