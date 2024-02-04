@@ -34,10 +34,10 @@
 
     #Copy needed files
     sudo cp -r conf/functions.sh /etc/
-    sudo cp -r utils/screen-scrypt.sh /etc/
+    sudo cp -r utils/screen-script.sh /etc/
     sudo cp -r conf/editconf.py /usr/bin/
     sudo chmod +x /usr/bin/editconf.py
-    sudo chmod +x /etc/screen-scrypt.sh
+    sudo chmod +x /etc/screen-script.sh
 
     source /etc/functions.sh
 
@@ -1081,7 +1081,7 @@
     sudo chgrp www-data /var/yiimp -R
     sudo chmod 775 /var/yiimp -R
 
-    #Add to contrab screen-scrypt
+    #Add to contrab screen-script
     (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-script.sh") | crontab -
 
     #fix error screen main "service"
