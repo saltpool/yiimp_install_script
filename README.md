@@ -1,12 +1,7 @@
-# Yiimp_install_scrypt v0.3 (update May, 2022)
-
-Official Yiimp (used in this script for Yiimp Installation): https://github.com/tpruvot/yiimp
-
----
-
-## Install script for yiimp on Ubuntu Server 16.04 / 18.04 (use Tpruvot's Yiimp)
-
-USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 16.04 / 18.04 !
+# Ubuntu 22.04 Yiimp install script v0.1 (February, 2024)
+# NOT YET FUNCTIONAL
+## Install script for yiimp on Ubuntu Server 22.04
+USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 22.04!
 
 Connect on your VPS =>
 
@@ -19,8 +14,8 @@ Connect on your VPS =>
 - exit
 - su - pool
 - sudo apt -y install git
-- git clone https://github.com/Kudaraidee/yiimp_install_script.git
-- cd yiimp_install_scrypt/
+- git clone https://github.com/craiglyoung/yiimp-cly.git
+- cd yiimp-cly
 - bash install.sh (DO NOT RUN THE SCRIPT AS ROOT or SUDO)
 - At the end, you MUST REBOOT to finalize installation...
 
@@ -28,8 +23,6 @@ Finish !
 
 - Go http://xxx.xxx.xxx.xxx or https://xxx.xxx.xxx.xxx (if you have chosen LetsEncrypt SSL). Enjoy !
 - Go http://xxx.xxx.xxx.xxx/site/myadmin or https://xxx.xxx.xxx.xxx/site/myadmin to access Panel Admin
-
-If you are issue after installation (nginx,mariadb... not found), use this script : bash install-debug.sh (watch the log during installation)
 
 ###### :bangbang: **YOU MUST UPDATE THE FOLLOWING FILES :**
 
