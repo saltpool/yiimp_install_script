@@ -47,7 +47,7 @@
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
     echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2 $COL_RESET"
-    echo -e "$GREEN Running under Yii Framework 1.1.28 $COL_RESET
+    echo -e "$GREEN Running under Yii Framework 1.1.28 $COL_RESET"
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo
     sleep 3
