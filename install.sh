@@ -303,7 +303,7 @@
 
     # Compil Blocknotify
     cd ~
-    git clone https://github.com/craiglyoung/yiimp-cly.git
+    git clone -b PHP8.3 https://github.com/craiglyoung/yiimp-cly.git
     cd $HOME/yiimp-cly/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
