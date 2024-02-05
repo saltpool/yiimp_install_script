@@ -4,12 +4,12 @@
 # Modified by: Delari (https://github.com/xavatar/yiimp_install_scrypt)
 # Modified by: Craiglyoung
 # Program:
-#   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.3
+#   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2
 #   v0.1 (update - February 2024)
 #
 ################################################################################
 
-   script_version='v0.1-8.3'
+   script_version='v0.1-8.2'
 
     output() {
     printf "\E[0;33;40m"
@@ -45,7 +45,7 @@
     echo
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
-    echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.3 $COL_RESET"
+    echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2 $COL_RESET"
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo
     sleep 3
@@ -83,7 +83,7 @@
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N] : " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com) : " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N] : " BTC
-    #read -e -p "Please enter a new location for /site/adminRights this is to customize the Admin Panel entrance url (e.g. myAdminpanel) : " admin_panel
+    read -e -p "Please enter a new location for /site/adminRights. This is to customize the Admin Panel entrance url (e.g. AdminPanel) : " admin_panel
     read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel) : " Public
     read -e -p "Install Fail2ban? [Y/n] : " install_fail2ban
     read -e -p "Install UFW and configure ports? [Y/n] : " UFW
@@ -152,10 +152,10 @@
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
-    # Installing Installing php8.3
+    # Installing Installing php8.2
     echo
     echo
-    echo -e "$CYAN => Installing php8.3 : $COL_RESET"
+    echo -e "$CYAN => Installing php8.2 : $COL_RESET"
     echo
     sleep 3
 
@@ -166,20 +166,20 @@
     sudo apt -y update
 
     if [[ ("$DISTRO" == "22") ]]; then
-     apt_install php8.3-fpm php8.3-opcache php8.3 php8.3-common php8.3-gd php8.3-mysql php8.3-imap php8.3-cli \
-    php8.3-cgi php-pear imagemagick libruby php8.3-curl php8.3-intl php8.3-pspell mcrypt\
-    recode php8.3-sqlite3 php8.3-tidy php8.3-xmlrpc php8.3-xsl memcached php-imagick php-php-gettext php8.3-zip php8.3-mbstring \
-    libpsl-dev libnghttp2-dev php8.3-memcache php8.3-memcached
+     apt_install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
+    php8.2-cgi php-pear imagemagick libruby php8.2-curl php8.2-intl php8.2-pspell mcrypt\
+    recode php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl memcached php-imagick php-php-gettext php8.2-zip php8.2-mbstring \
+    libpsl-dev libnghttp2-dev php8.2-memcache php8.2-memcached
     else  
      echo -e "$RED Aborting, wrong O/S. Must be Ubuntu 22.04."
      exit 1
     fi
 
-    sudo update-alternatives --set php /usr/bin/php8.3
+    sudo update-alternatives --set php /usr/bin/php8.2
     
     sleep 5
-    sudo systemctl start php8.3-fpm
-    sudo systemctl status php8.3-fpm | sed -n "1,3p"
+    sudo systemctl start php8.2-fpm
+    sudo systemctl status php8.2-fpm | sed -n "1,3p"
     sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -304,7 +304,7 @@
 
     # Compil Blocknotify
     cd ~
-    git clone -b yiimp-8.3 https://github.com/craiglyoung/yiimp.git
+    git clone -b yiimp-8.2 https://github.com/craiglyoung/yiimp.git
     cd $HOME/yiimp/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
@@ -337,7 +337,7 @@
 
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
-    sudo sed -i 's/AdminRights/'AdminPanel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
+    sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
     sudo cp -r $HOME/yiimp/web /var/
     sudo mkdir -p /var/stratum
     cd $HOME/yiimp/stratum
@@ -433,7 +433,7 @@
 
         location ~ ^/index\.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -470,7 +470,7 @@
             deny all;
       }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -482,7 +482,7 @@
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
 	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php8.3-fpm.service
+    sudo systemctl reload php8.2-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -563,7 +563,7 @@
 
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -594,7 +594,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -605,7 +605,7 @@
     ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
     fi
 
-    sudo systemctl reload php8.3-fpm.service
+    sudo systemctl reload php8.2-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -647,7 +647,7 @@
 
         location ~ ^/index\.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -684,7 +684,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -696,7 +696,7 @@
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
 	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php8.3-fpm.service
+    sudo systemctl reload php8.2-fpm.service
     sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -777,7 +777,7 @@
 
             location ~ ^/index\.php$ {
                 fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
                 fastcgi_index index.php;
                 include fastcgi_params;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -810,7 +810,7 @@
             deny all;
     }
         location ~ /phpmyadmin/(.+\.php)$ {
-            fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.2-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
             include snippets/fastcgi-php.conf;
@@ -823,7 +823,7 @@
     echo -e "$GREEN Done...$COL_RESET"
 
     fi
-    sudo systemctl reload php8.3-fpm.service
+    sudo systemctl reload php8.2-fpm.service
     sudo systemctl restart nginx.service
     fi
 
@@ -1123,8 +1123,8 @@
     sudo systemctl status mysql | sed -n "1,3p"
     sudo systemctl restart nginx.service
     sudo systemctl status nginx | sed -n "1,3p"
-    sudo systemctl restart php8.3-fpm.service
-    sudo systemctl status php8.3-fpm | sed -n "1,3p"
+    sudo systemctl restart php8.2-fpm.service
+    sudo systemctl status php8.2-fpm | sed -n "1,3p"
 
     echo
     echo -e "$GREEN Done...$COL_RESET"
@@ -1144,22 +1144,20 @@
     echo -e "$RED Your mysql information is saved in ~/.my.cnf. $COL_RESET"
     echo
     echo -e "$RED Yiimp at : http://"$server_name" (https... if SSL enabled)"
-    echo -e "$RED Yiimp Admin at : http://"$server_name"/site/myadmin (https... if SSL enabled)"
+    echo -e "$RED Yiimp Admin at : http://"$server_name"/site/$admin_panel (https... if SSL enabled)"
     echo -e "$RED Yiimp phpMyAdmin at : http://"$server_name"/phpmyadmin (https... if SSL enabled)"
     echo
-    echo -e "$RED If you want change 'myadmin' to access Panel Admin : Edit this file : /var/web/yaamp/modules/site/SiteController.php"
-    echo -e "$RED Line 11 => change 'myadmin' and use the new address"
+    echo -e "$RED If you want change '$admin_panel' to access Panel Admin : Edit this file : /var/web/yaamp/modules/site/SiteController.php"
+    echo -e "$RED Line 11 => change '$admin_panel' and use the new access name"
     echo
     echo -e "$CYAN Please make sure to change your public keys / wallet addresses in the /var/web/serverconfig.php file. $COL_RESET"
     echo -e "$CYAN Please make sure to change your private keys in the /etc/yiimp/keys.php file. $COL_RESET"
-    echo
-    echo -e "$CYAN TUTO Youtube : https://www.youtube.com/watch?v=qE0rhfJ1g2k $COL_RESET"
     echo
     echo -e "$RED***************************************************$COL_RESET"
     echo -e "$RED YOU MUST REBOOT NOW TO FINALIZE INSTALLATION !!!  $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo -e "$RED if u have white page blank on site check          $COL_RESET"
-    echo -e "$RED php8.3-memcache | php8.3-memcached | php8.3-fpm   $COL_RESET"
+    echo -e "$RED php8.2-memcache | php8.2-memcached | php8.2-fpm   $COL_RESET"
     echo -e "$RED try just restart them first...                    $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo
