@@ -894,7 +894,7 @@
     cd yiimp/sql
 
     # Import sql dump
-    sudo zcat 2020-11-10-yaamp.sql.gz | sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf
+    sudo zcat 2020-11-10-yiimp.sql.gz | sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf
 
     # Oh the humanity!
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-04-24-market_history.sql
