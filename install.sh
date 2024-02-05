@@ -57,6 +57,7 @@
     echo
     sleep 3
 
+    sudo NEEDRESTART_MODE=a apt-get dist-upgrade --yes
     sudo apt -y update
     sudo apt -y upgrade
     sudo apt -y autoremove
