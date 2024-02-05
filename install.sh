@@ -2,10 +2,11 @@
 ################################################################################
 # Original Author:   Kudaraidee
 # Modified by: Delari (https://github.com/xavatar/yiimp_install_scrypt)
-# Modified by: Craiglyoung
+# Modified by: Saltpool
 # Program:
 #   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2
 #   v0.1 (update - February 2024)
+#   Yii 1.1.28 Framework supports up to PHP 8.2
 #
 ################################################################################
 
@@ -46,6 +47,7 @@
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
     echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2 $COL_RESET"
+    echo -e "$GREEN Running under Yii Framework 1.1.28 $COL_RESET
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo
     sleep 3
