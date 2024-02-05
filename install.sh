@@ -57,7 +57,7 @@
     echo
     sleep 3
 
-    sudo NEEDRESTART_MODE=a apt-get dist-upgrade --yes
+    sudo sed -i "s/#$nrconf{restart} = 'i';/$nrconf{restart} = 'a';/g" /etc/needrestart/needrestart.conf
     sudo apt -y update
     sudo apt -y upgrade
     sudo apt -y autoremove
@@ -1130,6 +1130,8 @@
     echo -e "$GREEN Done...$COL_RESET"
     sleep 3
 
+    sudo sed -i "s/$nrconf{restart} = 'a';/#$nrconf{restart} = 'i';/g" /etc/needrestart/needrestart.conf
+    
     echo
     echo
     echo
