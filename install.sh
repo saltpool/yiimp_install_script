@@ -307,9 +307,19 @@
     cd $HOME/yiimp/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
+    sudo strip blocknotify
 
     # Compile Stratum
     cd $HOME/yiimp/stratum/
+    
+    sudo apt install gcc-10 g++-10
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
+    sudo update-alternatives --set gcc /usr/bin/gcc-10
+    sudo update-alternatives --set g++ /usr/bin/g++-10 
+    
     git submodule init && git submodule update
     make -C algos
     make -C sha3
@@ -321,6 +331,9 @@
     fi
     make -j$((`nproc`+1))
 
+    sudo update-alternatives --set gcc /usr/bin/gcc-11 
+    sudo update-alternatives --set g++ /usr/bin/g++-11 
+
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
     sudo sed -i 's/AdminRights/'AdminPanel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
@@ -328,6 +341,7 @@
     sudo mkdir -p /var/stratum
     cd $HOME/yiimp/stratum
     sudo cp -a config.sample/. /var/stratum/config
+    sudo strip stratum
     sudo cp -r stratum /var/stratum
     sudo cp -r run.sh /var/stratum
     cd $HOME/yiimp
