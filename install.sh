@@ -3,14 +3,14 @@
 # Original Author:   Kudaraidee
 # Modified by: Delari (https://github.com/xavatar/yiimp_install_scrypt)
 # Modified by: Saltpool
-# Program:
+# Program: v0.1 (update - February 2024)
 #   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2
-#   v0.1 (update - February 2024)
-#   Yii 1.1.28 Framework supports up to PHP 8.2
-#
+#   Yii 1.1.29 Framework (supports up to PHP 8.2)
 ################################################################################
 
    script_version='v0.1-8.2'
+   yii_version='1.1.29'
+   php_version='8.2'
 
     output() {
     printf "\E[0;33;40m"
@@ -46,8 +46,8 @@
     echo
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
-    echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2 $COL_RESET"
-    echo -e "$GREEN Running under Yii Framework 1.1.28 $COL_RESET"
+    echo -e "$GREEN Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP $php_version $COL_RESET"
+    echo -e "$GREEN Running under Yii Framework $yii_version $COL_RESET"
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo
     sleep 3
@@ -306,7 +306,7 @@
 
     # Compil Blocknotify
     cd ~
-    git clone -b yiimp-8.2 https://github.com/saltpool/yiimp.git
+    git clone -b yiimp-8.2-1.1.29 https://github.com/saltpool/yiimp.git
     cd $HOME/yiimp/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
@@ -1161,7 +1161,7 @@
     echo -e "$RED YOU MUST REBOOT NOW TO FINALIZE INSTALLATION !!!  $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo -e "$RED if u have white page blank on site check          $COL_RESET"
-    echo -e "$RED php8.2-memcache | php8.2-memcached | php8.2-fpm   $COL_RESET"
+    echo -e "$RED php$php_version-memcache | php$php_version-memcached | php$php_version-fpm   $COL_RESET"
     echo -e "$RED try just restart them first...                    $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo
