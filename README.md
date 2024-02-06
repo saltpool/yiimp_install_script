@@ -1,7 +1,9 @@
 # Ubuntu 22.04 Yiimp install script v0.1 (February, 2024)
-# NOT YET FUNCTIONAL
+# NOT YET FULLY FUNCTIONAL. STILL CONTAINS BUGS.
 ## Install script for yiimp on Ubuntu Server 22.04
-USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 22.04!
+USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 22.04, with PHP 8.2 and Yii Framework 1.1.29!
+
+## Do not use in a production environment yet, testing only.
 
 Connect on your VPS =>
 
@@ -22,28 +24,28 @@ Connect on your VPS =>
 Finish !
 
 - Go http://xxx.xxx.xxx.xxx or https://xxx.xxx.xxx.xxx (if you have chosen LetsEncrypt SSL). Enjoy !
-- Go http://xxx.xxx.xxx.xxx/site/myadmin or https://xxx.xxx.xxx.xxx/site/myadmin to access Panel Admin
+- Go http://xxx.xxx.xxx.xxx/site/AdminPortal or https://xxx.xxx.xxx.xxx/site/AdminPortal to access Panel Admin
 
 ###### :bangbang: **YOU MUST UPDATE THE FOLLOWING FILES :**
 
-- **/var/web/serverconfig.php :** update this file to include your public ip (line = YAAMP_ADMIN_IP) to access the admin panel (Put your PERSONNAL IP, NOT IP of your VPS). update with public keys from exchanges. update with other information specific to your server..
+- **/var/web/serverconfig.php :** update this file to include your public ip (line = YAAMP_ADMIN_IP) to access the admin panel (Put your PERSONAL IP, NOT the IP of your VPS/server). Update with public keys from exchanges. Update with other information specific to your server..
 - **/etc/yiimp/keys.php :** update with secrect keys from the exchanges (not mandatory)
 - **If you want change 'AdminPanel' to access Panel Admin :** Edit this file "/var/web/yaamp/modules/site/SiteController.php" and Line 11 => change 'AdminPanel'
 
 ###### :bangbang: **IMPORTANT** :
 
-- The configuration of yiimp and coin require a minimum of knowledge in linux & many beers...
+- The configuration of yiimp and coin require a lot of knowledge of linux & many beers and hair pulling...
 - Your mysql information (login/Password) is saved in **~/.my.cnf**
 
 ---
 
 ###### This script has an interactive beginning and will ask for the following information :
 
-- Server Name (no http:// or www !!!!! Example : crypto.com OR pool.crypto.com OR 80.41.52.63)
-- Are you using a subdomain (mypoolx11.crypto.com)
+- Server Name (no http:// or www !!!!! Example : example.com OR pool.example.com OR 80.41.52.63)
+- Are you using a subdomain (pool.example.com)
 - Enter support email
 - Set stratum to AutoExchange
-- Your Public IP for admin access (Put your PERSONNAL IP, NOT IP of your VPS)
+- Your Public IP for admin access (Put your PERSONAL IP, NOT IP of your VPS)
 - Install Fail2ban
 - Install UFW and configure ports
 - Install LetsEncrypt SSL
@@ -52,6 +54,4 @@ Finish !
 
 **This install script will get you 95% ready to go with yiimp. There are a few things you need to do after the main install is finished.**
 
-While I did add some server security to the script, it is every server owners responsibility to fully secure their own servers. After the installation you will still need to customize your serverconfig.php file to your liking, add your API keys, and build/add your coins to the control panel.
-
-There will be several wallets already in yiimp. These have nothing to do with the installation script and are from the database import from the yiimp github.
+Ssome server security has been added to the script, but it is every server owner's responsibility to fully secure their own servers. After the installation you will still need to customize your serverconfig.php file to your liking, add your API keys, and build/add your coins to the control panel.
