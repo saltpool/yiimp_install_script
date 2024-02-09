@@ -36,6 +36,7 @@
     #Copy needed files
     sudo cp -r conf/functions.sh /etc/
     sudo cp -r utils/screen-script.sh /etc/
+    sudo cp -r utils/screen-stratum.sh /etc/
     sudo cp -r conf/editconf.py /usr/bin/
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-script.sh
@@ -55,7 +56,7 @@
     # Update package and Upgrade Ubuntu
     echo
     echo
-    echo -e "$CYAN => Updating system and installing required packages :$COL_RESET"
+    echo -e "$CYAN => Updating system and installing required packages:$COL_RESET"
     echo
     sleep 3
 
@@ -80,15 +81,15 @@
     echo
     echo -e "$RED Make sure you double check before hitting enter! Only one shot at these! $COL_RESET"
     echo
-    read -e -p "Enter time zone (e.g. Australia/Brisbane) : " TIME
+    read -e -p "Enter time zone (e.g. Australia/Brisbane): " TIME
     read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (xxx.xxx.xxx.xxx)) : " server_name
-    read -e -p "Are you using a subdomain (pool.example.com?) [y/N] : " sub_domain
-    read -e -p "Enter support email (e.g. admin@example.com) : " EMAIL
-    read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N] : " BTC
-    read -e -p "Please enter a new location for /site/adminRights. This is to customize the Admin Panel entrance url (e.g. AdminPanel) : " admin_panel
-    read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel) : " Public
-    read -e -p "Install Fail2ban? [Y/n] : " install_fail2ban
-    read -e -p "Install UFW and configure ports? [Y/n] : " UFW
+    read -e -p "Are you using a subdomain (pool.example.com?) [y/N]: " sub_domain
+    read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
+    read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N]: " BTC
+    read -e -p "Please enter a new location for /site/adminRights. This is to customize the Admin Panel entrance url (e.g. AdminPanel): " admin_panel
+    read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel): " Public
+    read -e -p "Install Fail2ban? [Y/n]: " install_fail2ban
+    read -e -p "Install UFW and configure ports? [Y/n]: " UFW
     read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
 
     # Switch Aptitude
@@ -102,7 +103,7 @@
     # Installing Nginx
     echo
     echo
-    echo -e "$CYAN => Installing Nginx server : $COL_RESET"
+    echo -e "$CYAN => Installing Nginx server: $COL_RESET"
     echo
     sleep 3
 
@@ -138,7 +139,7 @@
     # Installing Mariadb
     echo
     echo
-    echo -e "$CYAN => Installing Mariadb Server : $COL_RESET"
+    echo -e "$CYAN => Installing Mariadb Server: $COL_RESET"
     echo
     sleep 3
 
@@ -157,7 +158,7 @@
     # Installing Installing php8.2
     echo
     echo
-    echo -e "$CYAN => Installing php8.2 : $COL_RESET"
+    echo -e "$CYAN => Installing php8.2: $COL_RESET"
     echo
     sleep 3
 
@@ -189,7 +190,7 @@
     # Installing other needed files
     echo
     echo
-    echo -e "$CYAN => Installing other needed files : $COL_RESET"
+    echo -e "$CYAN => Installing other needed files: $COL_RESET"
     echo
     sleep 3
 
@@ -1103,6 +1104,9 @@
     #Add to contrab screen-script
     (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-script.sh") | crontab -
 
+    #Add to contrab screen-stratum
+    (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-stratum.sh") | crontab -
+
     #fix error screen main "service"
     sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
     sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
@@ -1116,7 +1120,7 @@
     sudo rm -rf /var/log/nginx/*
 
     #Hold update OpenSSL
-    #If you want remove the hold : sudo apt-mark unhold openssl
+    #If you want remove the hold: sudo apt-mark unhold openssl
     sudo apt-mark hold openssl
 
     #Restart service
@@ -1136,32 +1140,30 @@
 
     echo
     echo
-    echo
     echo -e "$GREEN***************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
-    echo -e "$GREEN Finish !!! $COL_RESET"
+    echo -e "$GREEN Finished !!! $COL_RESET"
     echo -e "$GREEN***************************$COL_RESET"
     echo
     echo
+    echo -e "$CYAN REMINDERS: $COL_RESET"
+    echo -e "$RED Your mysql information has been saved in ~/.my.cnf. $COL_RESET"
     echo
-    echo -e "$CYAN Whew that was fun, just some reminders. $COL_RESET"
-    echo -e "$RED Your mysql information is saved in ~/.my.cnf. $COL_RESET"
+    echo -e "$RED Yiimp at: http://"$server_name" (https... if SSL enabled)"
+    echo -e "$RED Yiimp Admin at: http://"$server_name"/site/$admin_panel (https... if SSL enabled)"
+    echo -e "$RED Yiimp phpMyAdmin at: http://"$server_name"/phpmyadmin (https... if SSL enabled)"
     echo
-    echo -e "$RED Yiimp at : http://"$server_name" (https... if SSL enabled)"
-    echo -e "$RED Yiimp Admin at : http://"$server_name"/site/$admin_panel (https... if SSL enabled)"
-    echo -e "$RED Yiimp phpMyAdmin at : http://"$server_name"/phpmyadmin (https... if SSL enabled)"
-    echo
-    echo -e "$RED If you want change '$admin_panel' to access Panel Admin : Edit this file : /var/web/yaamp/modules/site/SiteController.php"
+    echo -e "$RED If you want change '$admin_panel' to access Panel Admin, edit this file: /var/web/yaamp/modules/site/SiteController.php"
     echo -e "$RED Line 11 => change '$admin_panel' and use the new access name"
     echo
-    echo -e "$CYAN Please make sure to change your public keys / wallet addresses in the /var/web/serverconfig.php file. $COL_RESET"
+    echo -e "$CYAN Please make sure to change your public keys/wallet addresses in the /var/web/serverconfig.php file. $COL_RESET"
     echo -e "$CYAN Please make sure to change your private keys in the /etc/yiimp/keys.php file. $COL_RESET"
     echo
     echo -e "$RED***************************************************$COL_RESET"
     echo -e "$RED YOU MUST REBOOT NOW TO FINALIZE INSTALLATION !!!  $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
-    echo -e "$RED if u have white page blank on site check          $COL_RESET"
+    echo -e "$RED If you have a white page blank on site chec       $COL_RESET"
     echo -e "$RED php$php_version-memcache | php$php_version-memcached | php$php_version-fpm   $COL_RESET"
-    echo -e "$RED try just restart them first...                    $COL_RESET"
+    echo -e "$RED Try to just restart them first...                    $COL_RESET"
     echo -e "$RED***************************************************$COL_RESET"
     echo
