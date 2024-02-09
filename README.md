@@ -1,5 +1,5 @@
 # Ubuntu 22.04 Yiimp install script v0.2 (February, 2024)
-# NOT YET FULLY FUNCTIONAL. STILL CONTAINS BUGS.
+
 ## Install script for yiimp on Ubuntu Server 22.04
 USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 22.04, with PHP 8.2 and Yii Framework 1.1.29!
 
