@@ -47,6 +47,13 @@ Finish !
 
 ---
 
+###### :bankbang: **THEMES**
+- Once in the admin control panel, click on the Dashboard button. Then down then bottom, click on "Theme Manager"
+- Once in the theme manager, select which theme you would like to set the website to use and save.
+- There is either a "light" and "dark" symbol next to each theme - these will use different logo files, so make sure you create an approprpriate one. logo.png for light, and logo-dark.png for dark. Place whichever is appropriate into the /images directory.
+- If you need change the CSS of a theme, it can be found in the appropriate /extensions/jquery/themes directory. You may need to clear your browser cache to see any changes.
+- Create a pull request if you want any other themes added. You can create them easily at https://jqueryui.com/themeroller/
+
 ###### This script has an interactive beginning and will ask for the following information :
 
 - Server Name (no http:// or www !!!!! Example : example.com OR pool.example.com OR 80.41.52.63)
