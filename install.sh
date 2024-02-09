@@ -8,7 +8,7 @@
 #   Yii 1.1.29 Framework (supports up to PHP 8.2)
 ################################################################################
 
-   script_version='v0.1-8.2'
+   script_version='v0.2-8.2'
    yii_version='1.1.29'
    php_version='8.2'
 
@@ -307,7 +307,7 @@
 
     # Compil Blocknotify
     cd ~
-    git clone -b yiimp-8.2-1.1.29 https://github.com/saltpool/yiimp.git
+    git clone -b Yiimp-8.2-1.1.29 https://github.com/saltpool/yiimp.git
     cd $HOME/yiimp/blocknotify
     sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     make -j$((`nproc`+1))
