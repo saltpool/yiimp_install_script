@@ -47,7 +47,7 @@ Finish !
 
 ---
 
-###### :bankbang: **THEMES**
+###### :bangbang: **THEMES**
 - Once in the admin control panel, click on the Dashboard button. Then down then bottom, click on "Theme Manager"
 - Once in the theme manager, select which theme you would like to set the website to use and save.
 - There is either a "light" and "dark" symbol next to each theme - these will use different logo files, so make sure you create an approprpriate one. logo.png for light, and logo-dark.png for dark. Place whichever is appropriate into the /images directory.
