@@ -40,6 +40,7 @@
     sudo cp -r conf/editconf.py /usr/bin/
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-script.sh
+    sudo chmod +x /etc/screen-stratum.sh
 
     source /etc/functions.sh
 
@@ -937,6 +938,7 @@
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2020-06-03-blocks.sql
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-14-shares_solo.sql
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-29-blocks_effort.sql
+    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2024-02-09-themes.sql
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating a basic Yiimp serverconfig.php
