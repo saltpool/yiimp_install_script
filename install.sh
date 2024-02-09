@@ -933,6 +933,7 @@
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2019-03-coins_thepool_life.sql
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-14-shares_solo.sql
     sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-29-blocks_effort.sql
+    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2024-02-09-themes.sql
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating a basic Yiimp serverconfig.php
