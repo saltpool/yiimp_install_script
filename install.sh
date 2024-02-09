@@ -3,7 +3,7 @@
 # Original Author:   Kudaraidee
 # Modified by: Delari (https://github.com/xavatar/yiimp_install_scrypt)
 # Modified by: Saltpool
-# Program: v0.1 (update - February 2024)
+# Program: v0.2 (update - February 2024)
 #   Install yiimp on Ubuntu 22.04 running Nginx, MariaDB, and PHP 8.2
 #   Yii 1.1.29 Framework (supports up to PHP 8.2)
 ################################################################################
