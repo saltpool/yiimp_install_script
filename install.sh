@@ -1102,7 +1102,6 @@
     echo -e "$GREEN Finished !!! $COL_RESET"
     echo -e "$GREEN***************************************************$COL_RESET"
     echo
-    echo
     echo -e "$YELLOW REMINDERS: $COL_RESET"
     echo -e "$CYAN \e[1mYour mysql information has been saved in ~/.my.cnf. $COL_RESET"
     echo
@@ -1119,8 +1118,8 @@
     echo -e "$YELLOW***************************************************$COL_RESET"
     echo -e "$YELLOW \e[1mYOU MUST REBOOT NOW TO FINALISE INSTALLATION !!!  $COL_RESET"
     echo -e "$YELLOW***************************************************$COL_RESET"
-    echo -e "$YELLOW If you have a white page blank on site chec       $COL_RESET"
+    echo -e "$YELLOW If you have a white/blank page on the site check       $COL_RESET"
     echo -e "$YELLOW php$php_version-memcache | php$php_version-memcached | php$php_version-fpm   $COL_RESET"
-    echo -e "$YELLOW Try to just restart them first...                    $COL_RESET"
+    echo -e "$YELLOW Try to restart them, or install if they don't exist.                    $COL_RESET"
     echo -e "$YELLOW***************************************************$COL_RESET"
     echo
