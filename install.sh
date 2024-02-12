@@ -82,7 +82,7 @@
     echo -e "$YELLOW Make sure you double check before hitting enter! You only get one shot at these! $COL_RESET"
     echo
     read -e -p "Enter time zone (e.g. America/New York):" TIME
-    read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (xxx.xxx.xxx.xxx)) : " server_name
+    read -e -p "Domain Name (no http:// just : example.com or pool.example.com (IP is ok, but not recommended) : " server_name
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N]: " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N]: " BTC
@@ -285,7 +285,7 @@
     echo
     echo
     echo -e "$CYAN => Installing Yiimp $COL_RESET"
-    echo -e "$MAGENTA Grabbing Yiimp fron Github, building files and setting file structure."
+    echo -e "$MAGENTA Grabbing Yiimp fron Github, building files and setting file structure.$COL_RESET"
     #echo
     sleep 3
 
@@ -317,7 +317,8 @@
     hide_output make -C algos
     hide_output make -C sha3
     hide_output make -C iniparser
-    hide_output cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
+    cd secp256k1
+    hide_output chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
     cd $HOME/yiimp/stratum/
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
     hide_output sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
