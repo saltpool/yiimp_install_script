@@ -2,7 +2,7 @@
 
 ## Install script for yiimp on Ubuntu Server 22.04
 USE THIS SCRIPT ON FRESH INSTALL UBUNTU Server 22.04 only.
-Will install PHP 8.2 and Yii Framework 1.1.29, with a customied Yiimp!
+Will install PHP 8.2 and Yii Framework 1.1.29, with a customised Yiimp!
 
 # What's new in v0.2
 - New colour themes for Yiimp (24 'themes' to choose from)
