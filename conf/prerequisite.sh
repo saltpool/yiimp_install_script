@@ -7,8 +7,7 @@
 
 echo
 echo
-echo -e "$CYAN => Check prerequisite : $COL_RESET"
-echo
+echo -e "$CYAN => Checking prerequisites: $COL_RESET"
 
 if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
   DISTRO=22

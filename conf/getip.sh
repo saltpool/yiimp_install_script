@@ -6,8 +6,7 @@
 source /etc/functions.sh
 echo
 echo
-echo -e "$CYAN => Setting our global variables : $COL_RESET"
-echo
+echo -e "$CYAN => Setting global variables: $COL_RESET"
 
 # If the machine is behind a NAT, inside a VM, etc., it may not know
 # its IP address on the public network / the Internet. Ask the Internet

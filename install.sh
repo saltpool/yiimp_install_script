@@ -27,7 +27,7 @@
 
     #Add user group sudo + no password
     whoami=`whoami`
-    sudo usermod -aG sudo ${whoami}
+    hide_output sudo usermod -aG sudo ${whoami}
     echo '# yiimp
     # It needs passwordless sudo functionality.
     '""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
@@ -42,7 +42,7 @@
     sudo chmod +x /etc/screen-script.sh
     sudo chmod +x /etc/screen-stratum.sh
 
-    source /etc/functions.sh
+    source conf/functions.sh
 
     clear
     echo
@@ -58,15 +58,14 @@
     echo
     echo
     echo -e "$CYAN => Updating system and installing required packages:$COL_RESET"
-    echo
     sleep 3
 
-    sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
-    sudo apt -y update
-    sudo apt -y upgrade
-    sudo apt -y autoremove
-    sudo apt-get install -y software-properties-common
-    sudo apt -y install dialog python3 python3-pip acl nano apt-transport-https
+    hide_output sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+    hide_output sudo apt -y update
+    hide_output sudo apt -y upgrade
+    hide_output sudo apt -y autoremove
+    hide_output sudo apt-get install -y software-properties-common
+    hide_output sudo apt -y install dialog python3 python3-pip acl nano apt-transport-https
     echo -e "$GREEN Done...$COL_RESET"
 
     source conf/prerequisite.sh
@@ -80,9 +79,9 @@
 
     echo
     echo
-    echo -e "$RED Make sure you double check before hitting enter! Only one shot at these! $COL_RESET"
+    echo -e "$YELLOW Make sure you double check before hitting enter! You only get one shot at these! $COL_RESET"
     echo
-    read -e -p "Enter time zone (e.g. Australia/Brisbane): " TIME
+    read -e -p "Enter time zone (e.g. America/New York): " TIME
     read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (xxx.xxx.xxx.xxx)) : " server_name
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N]: " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
@@ -105,25 +104,23 @@
     echo
     echo
     echo -e "$CYAN => Installing Nginx server: $COL_RESET"
-    echo
     sleep 3
 
     if [ -f /usr/sbin/apache2 ]; then
     echo -e "Removing apache..."
-    sudo apt-get -y purge apache2 apache2-*
-    sudo apt-get -y --purge autoremove
+    hide_output sudo apt-get -y purge apache2 apache2-*
+    hide_output sudo apt-get -y --purge autoremove
     fi
 
-    sudo apt -y install nginx
-    sudo rm /etc/nginx/sites-enabled/default
-    sudo systemctl start nginx.service
-    sudo systemctl enable nginx.service
-    sudo systemctl start cron.service
-    sudo systemctl enable cron.service
+    hide_output sudo apt -y install nginx
+    hide_output sudo rm /etc/nginx/sites-enabled/default
+    hide_output sudo systemctl start nginx.service
+    hide_output sudo systemctl enable nginx.service
+    hide_output sudo systemctl start cron.service
+    hide_output sudo systemctl enable cron.service
     sleep 5
     sudo systemctl status nginx | sed -n "1,3p"
     sleep 15
-    echo
     echo -e "$GREEN Done...$COL_RESET"
 
     # Making Nginx a bit hard
@@ -141,36 +138,33 @@
     echo
     echo
     echo -e "$CYAN => Installing Mariadb Server: $COL_RESET"
-    echo
     sleep 3
 
     # Create random password
     rootpasswd=$(openssl rand -base64 12)
     export DEBIAN_FRONTEND="noninteractive"
-    sudo apt -y install mariadb-server
-    sudo systemctl enable mariadb.service
-    sudo systemctl start mariadb.service
+    hide_output sudo apt -y install mariadb-server
+    hide_output sudo systemctl enable mariadb.service
+    hide_output sudo systemctl start mariadb.service
     sleep 5
     sudo systemctl status mariadb | sed -n "1,3p"
     sleep 15
-    echo
     echo -e "$GREEN Done...$COL_RESET"
 
     # Installing Installing php8.2
     echo
     echo
     echo -e "$CYAN => Installing php8.2: $COL_RESET"
-    echo
     sleep 3
 
     source conf/pool.conf
     if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
-    sudo add-apt-repository -y ppa:ondrej/php
+    hide_output sudo add-apt-repository -y ppa:ondrej/php
     fi
-    sudo apt -y update
+    hide_output sudo apt -y update
 
     if [[ ("$DISTRO" == "22") ]]; then
-     apt_install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
+    hide_output sudo apt install -y php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
     php8.2-cgi php-pear imagemagick libruby php8.2-curl php8.2-intl php8.2-pspell mcrypt\
     recode php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl memcached php-imagick php-php-gettext php8.2-zip php8.2-mbstring \
     libpsl-dev libnghttp2-dev php8.2-memcache php8.2-memcached
@@ -179,44 +173,41 @@
      exit 1
     fi
 
-    sudo update-alternatives --set php /usr/bin/php8.2
+    hide_output sudo update-alternatives --set php /usr/bin/php8.2
     
     sleep 5
-    sudo systemctl start php8.2-fpm
+    hide_output sudo systemctl start php8.2-fpm
     sudo systemctl status php8.2-fpm | sed -n "1,3p"
     sleep 15
-    echo
     echo -e "$GREEN Done...$COL_RESET"
 
     # Installing other needed files
     echo
     echo
-    echo -e "$CYAN => Installing other needed files: $COL_RESET"
-    echo
+    echo -e "$CYAN => Installing other required files: $COL_RESET"
     sleep 3
 
-    sudo apt -y install libgmp3-dev libmysqlclient-dev libcurl4-gnutls-dev libkrb5-dev libldap2-dev libidn11-dev gnutls-dev \
+    hide_output sudo apt -y install libgmp3-dev libmysqlclient-dev libcurl4-gnutls-dev libkrb5-dev libldap2-dev libidn11-dev gnutls-dev \
     librtmp-dev sendmail mutt screen git
-    sudo apt -y install pwgen -y
+    hide_output sudo apt -y install pwgen -y
     echo -e "$GREEN Done...$COL_RESET"
     sleep 3
 
-    # Installing Package to compile crypto currency
+    # Installing packages to compile crypto currency:
     echo
     echo
     echo -e "$CYAN => Installing Package to compile crypto currency $COL_RESET"
-    echo
     sleep 3
 
-    sudo apt install -y software-properties-common build-essential
-    sudo apt install -y libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
-    sudo apt install -y libminiupnpc17 libzmq5
-    sudo apt install -y libcanberra-gtk-module libqrencode-dev libzmq3-dev libminizip-dev
-    sudo apt install -y libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
-    sudo apt install -y libssh-dev libbrotli-dev
-    sudo add-apt-repository -y ppa:luke-jr/bitcoincore
-    sudo apt -y update
-    sudo apt install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
+    hide_output sudo apt install -y software-properties-common build-essential
+    hide_output sudo apt install -y libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
+    hide_output sudo apt install -y libminiupnpc17 libzmq5
+    hide_output sudo apt install -y libcanberra-gtk-module libqrencode-dev libzmq3-dev libminizip-dev
+    hide_output sudo apt install -y libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
+    hide_output sudo apt install -y libssh-dev libbrotli-dev
+    hide_output sudo add-apt-repository -y ppa:luke-jr/bitcoincore
+    hide_output sudo apt -y update
+    hide_output sudo apt install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating Random Passwords
@@ -228,8 +219,7 @@
     # Test Email
     echo
     echo
-    echo -e "$CYAN => Testing to see if server emails are sent $COL_RESET"
-    echo
+    echo -e "$CYAN => Testing to see if server emails are sent: $COL_RESET"
     sleep 3
 
     if [[ "$root_email" != "" ]]; then
@@ -243,7 +233,7 @@
         echo "Cheers" >> sudo tee --append /tmp/email.message
         sudo sendmail -s "SMTP Testing" $root_email < sudo tee --append /tmp/email.message
 
-        sudo rm -f /tmp/email.message
+        hide_output sudo rm -f /tmp/email.message
         echo "Mail sent"
     fi
     fi
@@ -252,37 +242,34 @@
     # Installing Fail2Ban & UFW
     echo
     echo
-    echo -e "$CYAN => Some optional installs (Fail2Ban & UFW) $COL_RESET"
-    echo
+    echo -e "$CYAN => Some optional installs (Fail2Ban & UFW): $COL_RESET"
     sleep 3
 
     if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
-    sudo apt -y install fail2ban
+    hide_output sudo apt -y install fail2ban
     sleep 5
     sudo systemctl status fail2ban | sed -n "1,3p"
         fi
 
     if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
-    sudo apt -y install ufw
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
-    sudo ufw allow ssh
-    sudo ufw allow http
-    sudo ufw allow https
-    sudo ufw allow 3333/tcp
-    sudo ufw --force enable
+    hide_output sudo apt -y install ufw
+    hide_output sudo ufw default deny incoming
+    hide_output sudo ufw default allow outgoing
+    hide_output sudo ufw allow ssh
+    hide_output sudo ufw allow http
+    hide_output sudo ufw allow https
+    hide_output sudo ufw allow 3333/tcp
+    hide_output sudo ufw --force enable
     sleep 5
     sudo systemctl status ufw | sed -n "1,3p"
     fi
 
-    echo
     echo -e "$GREEN Done...$COL_RESET"
 
     # Installing PhpMyAdmin
     echo
     echo
-    echo -e "$CYAN => Installing phpMyAdmin $COL_RESET"
-    echo
+    echo -e "$CYAN => Installing phpMyAdmin: $COL_RESET"
     sleep 3
 
     echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect" | sudo debconf-set-selections
@@ -291,72 +278,73 @@
     echo "phpmyadmin phpmyadmin/mysql/admin-pass password $rootpasswd" | sudo debconf-set-selections
     echo "phpmyadmin phpmyadmin/mysql/app-pass password $AUTOGENERATED_PASS" | sudo debconf-set-selections
     echo "phpmyadmin phpmyadmin/app-password-confirm password $AUTOGENERATED_PASS" | sudo debconf-set-selections
-    sudo apt -y install phpmyadmin
+    hide_output sudo apt -y install phpmyadmin
     echo -e "$GREEN Done...$COL_RESET"
 
     # Installing Yiimp
     echo
     echo
     echo -e "$CYAN => Installing Yiimp $COL_RESET"
-    echo
-    echo -e "Grabbing yiimp fron Github, building files and setting file structure."
-    echo
+    echo -e "Grabbing Yiimp fron Github, building files and setting file structure."
+    #echo
     sleep 3
 
     # Generating Random Password for stratum
     blckntifypass=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
-    # Compil Blocknotify
+    # Compile Blocknotify
+    echo -e "$MAGENTA Compiling Blocknotify"
     cd ~
-    git clone https://github.com/saltpool/yiimp.git
+    hide_output git clone https://github.com/saltpool/yiimp.git
     cd $HOME/yiimp/blocknotify
-    sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
-    make -j$((`nproc`+1))
+    hide_output sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
+    hide_output make -j$((`nproc`+1))
     sudo strip blocknotify
 
     # Compile Stratum
+    echo -e "$MAGENTA Compiling Stratum"
     cd $HOME/yiimp/stratum/
     
-    sudo apt install gcc-10 g++-10 -y
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
-    sudo update-alternatives --set gcc /usr/bin/gcc-10
-    sudo update-alternatives --set g++ /usr/bin/g++-10 
+    hide_output sudo apt install gcc-10 g++-10 -y
+    hide_output sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+    hide_output sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
+    hide_output sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+    hide_output sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 11
+    hide_output sudo update-alternatives --set gcc /usr/bin/gcc-10
+    hide_output sudo update-alternatives --set g++ /usr/bin/g++-10 
     
-    git submodule init && git submodule update
-    make -C algos
-    make -C sha3
-    make -C iniparser
-    cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
+    hide_output git submodule init && git submodule update
+    hide_output make -C algos
+    hide_output make -C sha3
+    hide_output make -C iniparser
+    hide_output cd secp256k1 && chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
     cd $HOME/yiimp/stratum/
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
-    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
+    hide_output sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
     fi
-    make -j$((`nproc`+1))
+    hide_output make -j$((`nproc`+1))
 
-    sudo update-alternatives --set gcc /usr/bin/gcc-11 
-    sudo update-alternatives --set g++ /usr/bin/g++-11 
+    hide_output sudo update-alternatives --set gcc /usr/bin/gcc-11 
+    hide_output sudo update-alternatives --set g++ /usr/bin/g++-11 
 
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
-    sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
-    sudo cp -r $HOME/yiimp/web /var/
-    sudo mkdir -p /var/stratum
+    hide_output sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
+    hide_output sudo cp -r $HOME/yiimp/web /var/
+    hide_output sudo mkdir -p /var/stratum
     cd $HOME/yiimp/stratum
-    sudo cp -a config.sample/. /var/stratum/config
+    hide_output sudo cp -a config.sample/. /var/stratum/config
     sudo strip stratum
-    sudo cp -r stratum /var/stratum
-    sudo cp -r run.sh /var/stratum
+    hide_output sudo cp -r stratum /var/stratum
+    hide_output sudo cp -r run.sh /var/stratum
     cd $HOME/yiimp
-    sudo cp -r $HOME/yiimp/bin/. /bin/
-    sudo cp -r $HOME/yiimp/blocknotify/blocknotify /usr/bin/
-    sudo cp -r $HOME/yiimp/blocknotify/blocknotify /var/stratum/
-    sudo mkdir -p /etc/yiimp
-    sudo mkdir -p /$HOME/backup/
+    hide_output sudo cp -r $HOME/yiimp/bin/. /bin/
+    hide_output sudo cp -r $HOME/yiimp/blocknotify/blocknotify /usr/bin/
+    hide_output sudo cp -r $HOME/yiimp/blocknotify/blocknotify /var/stratum/
+    hide_output sudo mkdir -p /etc/yiimp
+    hide_output sudo mkdir -p /$HOME/backup/
     #fixing yiimp
-    sudo sed -i "s|ROOTDIR=/data/yiimp|ROOTDIR=/var|g" /bin/yiimp
+    hide_output sudo sed -i "s|ROOTDIR=/data/yiimp|ROOTDIR=/var|g" /bin/yiimp
     #fixing run.sh
     sudo rm -r /var/stratum/config/run.sh
     echo '
@@ -378,23 +366,20 @@
     echo
     echo
     echo -e "$CYAN => Update default timezone. $COL_RESET"
-    echo
 
-    echo -e " Setting TimeZone to $TIME...$COL_RESET"
+    echo -e "Setting TimeZone to $TIME...$COL_RESET"
     if [ ! -f /etc/timezone ]; then
     echo "Setting timezone to $TIME."
     echo $TIME > sudo /etc/timezone
-    sudo systemctl restart rsyslog
+    hide_output sudo systemctl restart rsyslog
     fi
     sudo systemctl status rsyslog | sed -n "1,3p"
-    echo
     echo -e "$GREEN Done...$COL_RESET"
 
     # Creating webserver initial config file
     echo
     echo
     echo -e "$CYAN => Creating webserver initial config file $COL_RESET"
-    echo
 
     # Adding user to group, creating dir structure, setting permissions
     sudo mkdir -p /var/www/$server_name/html
@@ -485,22 +470,22 @@
 
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
-	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php8.2-fpm.service
-    sudo systemctl restart nginx.service
+    sudo ln -s /var/stratum/config /var/web/list-algos
+    hide_output sudo systemctl reload php8.2-fpm.service
+    hide_output sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
     if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
 
     # Install SSL (with SubDomain)
     echo
-    echo -e "Install LetsEncrypt and setting SSL (with SubDomain)"
+    echo -e 'Install LetsEncrypt and setting SSL (with SubDomain)'
     echo
 
-    sudo apt -y install letsencrypt
-    sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name"
+    hide_output sudo apt -y install letsencrypt
+    hide_output sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name"
     sudo rm /etc/nginx/sites-available/$server_name.conf
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    hide_output sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
     # I am SSL Man!
     echo 'include /etc/nginx/blockuseragents.rules;
     server {
@@ -609,8 +594,8 @@
     ' | sudo -E tee /etc/nginx/sites-available/$server_name.conf >/dev/null 2>&1
     fi
 
-    sudo systemctl reload php8.2-fpm.service
-    sudo systemctl restart nginx.service
+    hide_output sudo systemctl reload php8.2-fpm.service
+    hide_output sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
     else
@@ -699,23 +684,23 @@
 
     sudo ln -s /etc/nginx/sites-available/$server_name.conf /etc/nginx/sites-enabled/$server_name.conf
     sudo ln -s /var/web /var/www/$server_name/html
-	sudo ln -s /var/stratum/config /var/web/list-algos
-    sudo systemctl reload php8.2-fpm.service
-    sudo systemctl restart nginx.service
+    sudo ln -s /var/stratum/config /var/web/list-algos
+    hide_output sudo systemctl reload php8.2-fpm.service
+    hide_output sudo systemctl restart nginx.service
     echo -e "$GREEN Done...$COL_RESET"
 
     if [[ ("$ssl_install" == "y" || "$ssl_install" == "Y" || "$ssl_install" == "") ]]; then
 
     # Install SSL (without SubDomain)
     echo
-    echo -e "Install LetsEncrypt and setting SSL (without SubDomain)"
+    echo -e 'Install LetsEncrypt and setting SSL (without SubDomain)'
     echo
     sleep 3
 
-    sudo apt -y install letsencrypt
-    sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name" -d www."$server_name"
-    sudo rm /etc/nginx/sites-available/$server_name.conf
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    hide_output sudo apt -y install letsencrypt
+    hide_output sudo letsencrypt certonly -a webroot --webroot-path=/var/web --email "$EMAIL" --agree-tos -d "$server_name" -d www."$server_name"
+    hide_output sudo rm /etc/nginx/sites-available/$server_name.conf
+    hide_output sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
     # I am SSL Man!
     echo 'include /etc/nginx/blockuseragents.rules;
     server {
@@ -827,15 +812,14 @@
     echo -e "$GREEN Done...$COL_RESET"
 
     fi
-    sudo systemctl reload php8.2-fpm.service
-    sudo systemctl restart nginx.service
+    hide_output sudo systemctl reload php8.2-fpm.service
+    hide_output sudo systemctl restart nginx.service
     fi
 
     # Config Database
     echo
     echo
     echo -e "$CYAN => Now for the database fun! $COL_RESET"
-    echo
     sleep 3
 
     # Create database
@@ -916,29 +900,29 @@
     sudo zcat 2019-11-10-yiimp.sql.gz | sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf
 
     # Oh the humanity!
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-04-24-market_history.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-04-27-settings.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-11-coins.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-15-benchmarks.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-23-bookmarks.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-06-01-notifications.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-06-04-bench_chips.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-11-23-coins.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-02-05-benchmarks.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-03-31-earnings_index.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-05-accounts_case_swaptime.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-06-payouts_coinid_memo.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-09-notifications.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-10-bookmarks.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-11-segwit.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-01-stratums_ports.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-02-coins_getinfo.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-09-22-workers.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2019-03-coins_thepool_life.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2020-06-03-blocks.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-14-shares_solo.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-29-blocks_effort.sql
-    sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2024-02-09-themes.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-04-24-market_history.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-04-27-settings.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-11-coins.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-15-benchmarks.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-05-23-bookmarks.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-06-01-notifications.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-06-04-bench_chips.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2016-11-23-coins.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-02-05-benchmarks.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-03-31-earnings_index.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-05-accounts_case_swaptime.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-06-payouts_coinid_memo.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-09-notifications.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-10-bookmarks.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2017-11-segwit.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-01-stratums_ports.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-02-coins_getinfo.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2018-09-22-workers.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2019-03-coins_thepool_life.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2020-06-03-blocks.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-14-shares_solo.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2022-10-29-blocks_effort.sql
+    hide_output sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf --force < 2024-02-09-themes.sql
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating a basic Yiimp serverconfig.php
@@ -1066,12 +1050,12 @@
     sleep 3
 
     cd /var/stratum/config
-    sudo sed -i 's/password = tu8tu5/password = '$blckntifypass'/g' *.conf
-    sudo sed -i 's/server = yaamp.com/server = '$server_name'/g' *.conf
-    sudo sed -i 's/host = yaampdb/host = localhost/g' *.conf
-    sudo sed -i 's/database = yaamp/database = yiimpfrontend/g' *.conf
-    sudo sed -i 's/username = root/username = stratum/g' *.conf
-    sudo sed -i 's/password = patofpaq/password = '$password2'/g' *.conf
+    hide_output sudo sed -i 's/password = tu8tu5/password = '$blckntifypass'/g' *.conf
+    hide_output sudo sed -i 's/server = yaamp.com/server = '$server_name'/g' *.conf
+    hide_output sudo sed -i 's/host = yaampdb/host = localhost/g' *.conf
+    hide_output sudo sed -i 's/database = yaamp/database = yiimpfrontend/g' *.conf
+    hide_output sudo sed -i 's/username = root/username = stratum/g' *.conf
+    hide_output sudo sed -i 's/password = patofpaq/password = '$password2'/g' *.conf
     cd ~
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -1110,12 +1094,12 @@
     (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-stratum.sh") | crontab -
 
     #fix error screen main "service"
-    sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
-    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
+    hide_output sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
+    hide_output sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
 
     #fix error screen main "backup sql frontend"
-    sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
-    sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
+    hide_output sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
+    hide_output sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #Misc
     sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
@@ -1123,49 +1107,47 @@
 
     #Hold update OpenSSL
     #If you want remove the hold: sudo apt-mark unhold openssl
-    sudo apt-mark hold openssl
+    hide_output sudo apt-mark hold openssl
 
     #Restart service
-    sudo systemctl restart cron.service
-    sudo systemctl restart mysql
+    hide_output sudo systemctl restart cron.service
+    hide_output sudo systemctl restart mysql
     sudo systemctl status mysql | sed -n "1,3p"
-    sudo systemctl restart nginx.service
+    hide_output sudo systemctl restart nginx.service
     sudo systemctl status nginx | sed -n "1,3p"
-    sudo systemctl restart php8.2-fpm.service
+    hide_output sudo systemctl restart php8.2-fpm.service
     sudo systemctl status php8.2-fpm | sed -n "1,3p"
 
-    echo
     echo -e "$GREEN Done...$COL_RESET"
     sleep 3
 
-    sudo sed -i 's/$nrconf{restart} = '"'"'a'"'"';/#$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
+    hide_output sudo sed -i 's/$nrconf{restart} = '"'"'a'"'"';/#$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
 
     echo
-    echo
-    echo -e "$GREEN***************************$COL_RESET"
+    echo -e "$GREEN***************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
     echo -e "$GREEN Finished !!! $COL_RESET"
-    echo -e "$GREEN***************************$COL_RESET"
+    echo -e "$GREEN***************************************************$COL_RESET"
     echo
     echo
-    echo -e "$CYAN REMINDERS: $COL_RESET"
-    echo -e "$RED Your mysql information has been saved in ~/.my.cnf. $COL_RESET"
+    echo -e "$YELLOW REMINDERS: $COL_RESET"
+    echo -e "$CYAN \e[1mYour mysql information has been saved in ~/.my.cnf. $COL_RESET"
     echo
-    echo -e "$RED Yiimp at: http://"$server_name" (https... if SSL enabled)"
-    echo -e "$RED Yiimp Admin at: http://"$server_name"/site/$admin_panel (https... if SSL enabled)"
-    echo -e "$RED Yiimp phpMyAdmin at: http://"$server_name"/phpmyadmin (https... if SSL enabled)"
+    echo -e "$CYAN Yiimp at: http://$server_name (https... if SSL enabled)"
+    echo -e "$CYAN \e[1mYiimp Admin at: http://$server_name/site/$admin_panel (https... if SSL enabled)"
+    echo -e "$CYAN Yiimp phpMyAdmin at: http://$server_name/phpmyadmin (https... if SSL enabled)"
     echo
-    echo -e "$RED If you want change '$admin_panel' to access Panel Admin, edit this file: /var/web/yaamp/modules/site/SiteController.php"
-    echo -e "$RED Line 11 => change '$admin_panel' and use the new access name"
+    echo -e "$CYAN If you want change $admin_panel to access Panel Admin, edit this file: /var/web/yaamp/modules/site/SiteController.php"
+    echo -e "$CYAN Line 11 => change $admin_panel and use the new access name"
     echo
-    echo -e "$CYAN Please make sure to change your public keys/wallet addresses in the /var/web/serverconfig.php file. $COL_RESET"
-    echo -e "$CYAN Please make sure to change your private keys in the /etc/yiimp/keys.php file. $COL_RESET"
+    echo -e "$GREEN Please make sure to change your public keys/wallet addresses in the /var/web/serverconfig.php file. $COL_RESET"
+    echo -e "$GREEN Please make sure to change your private keys in the /etc/yiimp/keys.php file. $COL_RESET"
     echo
-    echo -e "$RED***************************************************$COL_RESET"
-    echo -e "$RED YOU MUST REBOOT NOW TO FINALIZE INSTALLATION !!!  $COL_RESET"
-    echo -e "$RED***************************************************$COL_RESET"
-    echo -e "$RED If you have a white page blank on site chec       $COL_RESET"
-    echo -e "$RED php$php_version-memcache | php$php_version-memcached | php$php_version-fpm   $COL_RESET"
-    echo -e "$RED Try to just restart them first...                    $COL_RESET"
-    echo -e "$RED***************************************************$COL_RESET"
+    echo -e "$YELLOW***************************************************$COL_RESET"
+    echo -e "$YELLOW \e[1mYOU MUST REBOOT NOW TO FINALISE INSTALLATION !!!  $COL_RESET"
+    echo -e "$YELLOW***************************************************$COL_RESET"
+    echo -e "$YELLOW If you have a white page blank on site chec       $COL_RESET"
+    echo -e "$YELLOW php$php_version-memcache | php$php_version-memcached | php$php_version-fpm   $COL_RESET"
+    echo -e "$YELLOW Try to just restart them first...                    $COL_RESET"
+    echo -e "$YELLOW***************************************************$COL_RESET"
     echo
