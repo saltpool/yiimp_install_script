@@ -81,7 +81,7 @@
     echo
     echo -e "$YELLOW Make sure you double check before hitting enter! You only get one shot at these! $COL_RESET"
     echo
-    read -e -p "Enter time zone (e.g. America/New York): " TIME
+    read -e -p "Enter time zone (e.g. America/New York):" TIME
     read -e -p "Domain Name (no http:// or www. just : example.com or pool.example.com or Public IP (xxx.xxx.xxx.xxx)) : " server_name
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N]: " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
@@ -285,7 +285,7 @@
     echo
     echo
     echo -e "$CYAN => Installing Yiimp $COL_RESET"
-    echo -e "Grabbing Yiimp fron Github, building files and setting file structure."
+    echo -e "$MAGENTA Grabbing Yiimp fron Github, building files and setting file structure."
     #echo
     sleep 3
 
@@ -293,7 +293,7 @@
     blckntifypass=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
     # Compile Blocknotify
-    echo -e "$MAGENTA Compiling Blocknotify"
+    echo -e "Compiling Blocknotify"
     cd ~
     hide_output git clone https://github.com/saltpool/yiimp.git
     cd $HOME/yiimp/blocknotify
@@ -302,7 +302,7 @@
     sudo strip blocknotify
 
     # Compile Stratum
-    echo -e "$MAGENTA Compiling Stratum"
+    echo -e "Compiling Stratum"
     cd $HOME/yiimp/stratum/
     
     hide_output sudo apt install gcc-10 g++-10 -y
@@ -379,7 +379,7 @@
     # Creating webserver initial config file
     echo
     echo
-    echo -e "$CYAN => Creating webserver initial config file $COL_RESET"
+    echo -e "$CYAN => Creating webserver initial config file: $COL_RESET"
 
     # Adding user to group, creating dir structure, setting permissions
     sudo mkdir -p /var/www/$server_name/html
@@ -819,7 +819,7 @@
     # Config Database
     echo
     echo
-    echo -e "$CYAN => Now for the database fun! $COL_RESET"
+    echo -e "$CYAN => Importing database: $COL_RESET"
     sleep 3
 
     # Create database
@@ -928,8 +928,7 @@
     # Generating a basic Yiimp serverconfig.php
     echo
     echo
-    echo -e "$CYAN => Generating a basic Yiimp serverconfig.php $COL_RESET"
-    echo
+    echo -e "$CYAN => Generating a basic Yiimp serverconfig.php: $COL_RESET"
     sleep 3
 
     # Make config file
@@ -1045,8 +1044,7 @@
     # Updating stratum config files with database connection info
     echo
     echo
-    echo -e "$CYAN => Updating stratum config files with database connection info. $COL_RESET"
-    echo
+    echo -e "$CYAN => Updating stratum config files with database connection info: $COL_RESET"
     sleep 3
 
     cd /var/stratum/config
@@ -1062,8 +1060,7 @@
     # Final Directory permissions
     echo
     echo
-    echo -e "$CYAN => Final Directory permissions $COL_RESET"
-    echo
+    echo -e "$CYAN => Working on final directory permissions: $COL_RESET"
     sleep 3
 
     whoami=`whoami`
