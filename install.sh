@@ -338,6 +338,7 @@
     sudo strip stratum
     hide_output sudo cp -r stratum /var/stratum
     hide_output sudo cp -r run.sh /var/stratum
+    sudo chmod +x /var/stratum/run.sh
     cd $HOME/yiimp
     hide_output sudo cp -r $HOME/yiimp/bin/. /bin/
     hide_output sudo cp -r $HOME/yiimp/blocknotify/blocknotify /usr/bin/
