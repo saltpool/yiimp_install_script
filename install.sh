@@ -60,7 +60,7 @@
     echo -e "$CYAN => Updating system and installing required packages:$COL_RESET"
     sleep 3
 
-    hide_output sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+    sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
     hide_output sudo apt -y update
     hide_output sudo apt -y upgrade
     hide_output sudo apt -y autoremove
@@ -297,7 +297,7 @@
     cd ~
     hide_output git clone https://github.com/saltpool/yiimp.git
     cd $HOME/yiimp/blocknotify
-    hide_output sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
+    sudo sed -i 's/tu8tu5/'$blckntifypass'/' blocknotify.cpp
     hide_output make -j$((`nproc`+1))
     sudo strip blocknotify
 
@@ -321,7 +321,7 @@
     hide_output chmod +x autogen.sh && hide_output ./autogen.sh && hide_output ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && hide_output make
     cd $HOME/yiimp/stratum/
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
-    hide_output sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
+    sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
     fi
     hide_output make -j$((`nproc`+1))
 
@@ -330,7 +330,7 @@
 
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
-    hide_output sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
+    sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
     hide_output sudo cp -r $HOME/yiimp/web /var/
     hide_output sudo mkdir -p /var/stratum
     cd $HOME/yiimp/stratum
@@ -345,7 +345,7 @@
     hide_output sudo mkdir -p /etc/yiimp
     hide_output sudo mkdir -p /$HOME/backup/
     #fixing yiimp
-    hide_output sudo sed -i "s|ROOTDIR=/data/yiimp|ROOTDIR=/var|g" /bin/yiimp
+    sudo sed -i "s|ROOTDIR=/data/yiimp|ROOTDIR=/var|g" /bin/yiimp
     #fixing run.sh
     sudo rm -r /var/stratum/config/run.sh
     echo '
@@ -1024,12 +1024,12 @@
     sleep 3
 
     cd /var/stratum/config
-    hide_output sudo sed -i 's/password = tu8tu5/password = '$blckntifypass'/g' *.conf
-    hide_output sudo sed -i 's/server = yaamp.com/server = '$server_name'/g' *.conf
-    hide_output sudo sed -i 's/host = yaampdb/host = localhost/g' *.conf
-    hide_output sudo sed -i 's/database = yaamp/database = yiimpfrontend/g' *.conf
-    hide_output sudo sed -i 's/username = root/username = stratum/g' *.conf
-    hide_output sudo sed -i 's/password = patofpaq/password = '$password2'/g' *.conf
+    sudo sed -i 's/password = tu8tu5/password = '$blckntifypass'/g' *.conf
+    sudo sed -i 's/server = yaamp.com/server = '$server_name'/g' *.conf
+    sudo sed -i 's/host = yaampdb/host = localhost/g' *.conf
+    sudo sed -i 's/database = yaamp/database = yiimpfrontend/g' *.conf
+    sudo sed -i 's/username = root/username = stratum/g' *.conf
+    sudo sed -i 's/password = patofpaq/password = '$password2'/g' *.conf
     cd ~
     echo -e "$GREEN Done...$COL_RESET"
 
@@ -1067,12 +1067,12 @@
     (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-stratum.sh") | crontab -
 
     #fix error screen main "service"
-    hide_output sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
-    hide_output sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
+    sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
+    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
 
     #fix error screen main "backup sql frontend"
-    hide_output sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
-    hide_output sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
+    sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
+    sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #Misc
     sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
@@ -1094,7 +1094,7 @@
     echo -e "$GREEN Done...$COL_RESET"
     sleep 3
 
-    hide_output sudo sed -i 's/$nrconf{restart} = '"'"'a'"'"';/#$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
+    sudo sed -i 's/$nrconf{restart} = '"'"'a'"'"';/#$nrconf{restart} = '"'"'i'"'"';/g' /etc/needrestart/needrestart.conf
 
     echo
     echo -e "$GREEN***************************************************$COL_RESET"
