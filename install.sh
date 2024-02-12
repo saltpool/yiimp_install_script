@@ -318,7 +318,7 @@
     hide_output make -C sha3
     hide_output make -C iniparser
     cd secp256k1
-    hide_output chmod +x autogen.sh && ./autogen.sh && ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && make
+    hide_output chmod +x autogen.sh && hide_output ./autogen.sh && hide_output ./configure --enable-experimental --enable-module-ecdh --with-bignum=no --enable-endomorphism && hide_output make
     cd $HOME/yiimp/stratum/
     if [[ ("$BTC" == "y" || "$BTC" == "Y") ]]; then
     hide_output sudo sed -i 's/CFLAGS += -DNO_EXCHANGE/#CFLAGS += -DNO_EXCHANGE/' $HOME/yiimp/stratum/Makefile
