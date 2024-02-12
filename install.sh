@@ -27,7 +27,7 @@
 
     #Add user group sudo + no password
     whoami=`whoami`
-    hide_output sudo usermod -aG sudo ${whoami}
+    sudo usermod -aG sudo ${whoami}
     echo '# yiimp
     # It needs passwordless sudo functionality.
     '""''"${whoami}"''""' ALL=(ALL) NOPASSWD:ALL
