@@ -1069,7 +1069,10 @@
 
     #fix error screen main "service"
     sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
-    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
+    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php	f
+
+    sudo mkdir -p /home/crypto-data/wallets
+    sudo chown -R ${whoami}:${whoami} /home/crypto-data/
 
     #fix error screen main "backup sql frontend"
     sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
