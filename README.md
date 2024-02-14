@@ -61,7 +61,7 @@ Finish !
 - Whether you are using a subdomain (pool.example.com)
 - A generic type name for your pool (used in MOTD)
 - Your support email
-- Whether you wnat to set stratum to AutoExchange
+- Whether you want to set stratum to AutoExchange
 - Your Public IP for admin access (Put your PERSONAL IP, NOT the IP of your VPS/Server)
 - Whether you want to install Fail2ban
 - Whether you want to install UFW and configure ports
