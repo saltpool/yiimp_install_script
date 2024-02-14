@@ -8,7 +8,7 @@
 #   Yii 1.1.29 Framework (supports up to PHP 8.2)
 ################################################################################
 
-   script_version='v0.2-8.2'
+   script_version='v0.3-8.2'
    yii_version='1.1.29'
    php_version='8.2'
 
@@ -64,8 +64,8 @@
     hide_output sudo apt -y update
     hide_output sudo apt -y upgrade
     hide_output sudo apt -y autoremove
-    hide_output sudo apt-get install -y software-properties-common
-    hide_output sudo apt -y install dialog python3 python3-pip acl nano apt-transport-https
+    apt_install software-properties-common
+    apt_install dialog python3 python3-pip acl nano apt-transport-https
     echo -e "$GREEN Done...$COL_RESET"
 
     source conf/prerequisite.sh
@@ -84,6 +84,7 @@
     read -e -p "Enter time zone (e.g. America/New York):" TIME
     read -e -p "Domain Name (no http:// just : example.com or pool.example.com (IP is ok, but not recommended) : " server_name
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N]: " sub_domain
+    read -e -p "Enter the name of your pool (a general name, not the domain, e.g., Saltpool: " poolname
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N]: " BTC
     read -e -p "Please enter a new location for /site/adminRights. This is to customize the Admin Panel entrance url (e.g. AdminPanel): " admin_panel
@@ -91,14 +92,6 @@
     read -e -p "Install Fail2ban? [Y/n]: " install_fail2ban
     read -e -p "Install UFW and configure ports? [Y/n]: " UFW
     read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
-
-    # Switch Aptitude
-    #echo
-    #echo -e "$CYAN Switching to Aptitude $COL_RESET"
-    #echo
-    #sleep 3
-    #sudo apt -y install aptitude
-    #echo -e "$GREEN Done...$COL_RESET $COL_RESET"
 
     # Installing Nginx
     echo
@@ -164,7 +157,7 @@
     hide_output sudo apt -y update
 
     if [[ ("$DISTRO" == "22") ]]; then
-    hide_output sudo apt install -y php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
+    apt_install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
     php8.2-cgi php-pear imagemagick libruby php8.2-curl php8.2-intl php8.2-pspell mcrypt\
     recode php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl memcached php-imagick php-php-gettext php8.2-zip php8.2-mbstring \
     libpsl-dev libnghttp2-dev php8.2-memcache php8.2-memcached
@@ -199,15 +192,15 @@
     echo -e "$CYAN => Installing Package to compile crypto currency $COL_RESET"
     sleep 3
 
-    hide_output sudo apt install -y software-properties-common build-essential
-    hide_output sudo apt install -y libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
-    hide_output sudo apt install -y libminiupnpc17 libzmq5
-    hide_output sudo apt install -y libcanberra-gtk-module libqrencode-dev libzmq3-dev libminizip-dev
-    hide_output sudo apt install -y libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
-    hide_output sudo apt install -y libssh-dev libbrotli-dev
+    apt_install software-properties-common build-essential
+    apt_install libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git cmake libboost-all-dev zlib1g-dev libz-dev libseccomp-dev libcap-dev libminiupnpc-dev gettext
+    apt_install libminiupnpc17 libzmq5
+    apt_install libcanberra-gtk-module libqrencode-dev libzmq3-dev libminizip-dev
+    apt_install libqt5gui5 libqt5core5a libqt5webkit5-dev libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler
+    apt_install libssh-dev libbrotli-dev
     hide_output sudo add-apt-repository -y ppa:luke-jr/bitcoincore
     hide_output sudo apt -y update
-    hide_output sudo apt install -y libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
+    apt_install libdb4.8-dev libdb4.8++-dev libdb5.3 libdb5.3++
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating Random Passwords
@@ -281,7 +274,7 @@
     hide_output sudo apt -y install phpmyadmin
     echo -e "$GREEN Done...$COL_RESET"
 
-    # Installing Yiimp
+    # Installing Yiimp`
     echo
     echo
     echo -e "$CYAN => Installing Yiimp $COL_RESET"
@@ -305,7 +298,7 @@
     echo -e "Compiling Stratum"
     cd $HOME/yiimp/stratum/
     
-    hide_output sudo apt install gcc-10 g++-10 -y
+    apt_install gcc-10 g++-10 -y
     hide_output sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
     hide_output sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11
     hide_output sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
@@ -1077,6 +1070,28 @@
     #fix error screen main "backup sql frontend"
     sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
     sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
+
+    #MOTD
+    apt_install lsb-release figlet update-motd landscape-common update-notifier-common
+    sudo rm -r /etc/update-motd.d/
+    sudo mkdir /etc/update-motd.d/
+    sudo cp yiimp_install_script/conf/motd/* /etc/update-motd.d/
+    sudo chmod +x /etc/update-motd.d/*
+    sudo sed -i 's/xxxxxx/'$poolname'/' /etc/update-motd.d/00-header
+    echo '
+    clear
+    run-parts /etc/update-motd.d/ | sudo tee /etc/motd
+    ' | sudo -E tee /usr/bin/motd >/dev/null 2>&1
+    sudo chmod +x /usr/bin/motd
+
+    cd /var
+    sudo ln -s website/var/www/'"${server_name}"'/html/web website
+    
+    #Donations
+    echo 'BTCDON="16uNjqH5yqY4JaMTHtzddAHP2PfXYTGjhV"
+    LTCDON="LYB73E44CvijJXXCT1vEYYcnJstaKNriWv"
+    ETHDON="0x250e5d18fD7Fe2FaF8aD0c8221A889B9bc048076"
+    DOGEDON="D9tm4GDjmFHtNBUU47aRYxiKeDWnNGbLVQ"' | sudo -E tee /etc/yiimpdonate.conf >/dev/null 2>&1
 
     #Misc
     sudo mv $HOME/yiimp/ $HOME/yiimp-install-only-do-not-run-commands-from-this-folder
