@@ -70,8 +70,9 @@ echo
 # Pool status
 colored_message "Pool Status:"
 daemon='/home/crypto-data/wallets'
-site='/var/website'
+site='/var/web'
 echo
+echo "${GREEN}===============================================================${RESET}"
 print_header "Main:" "$(check_process_status 'main')" \
     "Daemon Directory:" "${YELLOW}$daemon${RESET}"
 
@@ -83,6 +84,7 @@ print_header "Loop2:" "$(check_process_status 'loop2')" \
 
 print_header "Debug:" "$(check_process_status 'log/debug.log')" \
     "Hint:"" ${GREEN}To detach from a screen type, ctrl+a+d${RESET}"
+echo "${GREEN}===============================================================${RESET}"
 echo
 
 # Server screens
