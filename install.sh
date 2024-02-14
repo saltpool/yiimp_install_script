@@ -1083,7 +1083,7 @@
        poolname="Saltpool"
     fi
      
-    sudo sed -i 's/xxxxxx/'$poolname'/' /etc/update-motd.d/00-header
+    sudo sed -i 's/xxxxxx/$poolname/' /etc/update-motd.d/00-header
     echo '
     clear
     run-parts /etc/update-motd.d/ | sudo tee /etc/motd
