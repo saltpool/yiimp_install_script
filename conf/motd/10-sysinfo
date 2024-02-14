@@ -87,12 +87,12 @@ print_header "Debug:" "$(check_process_status '/var/log/yiimp/debug.log')" \
 echo "${GREEN}====================================================================================${RESET}"
 echo
 
-# Server screens
-colored_message "Server screens:"
-echo -e "${YELLOW}To ${GREEN}Start${YELLOW} | ${RED}stop${YELLOW} | ${YELLOW}restart${YELLOW} | a screen use the following command.${RESET}"
-echo
-echo -e "${YELLOW}screens${GREEN} start ${YELLOW} |${RED} stop ${YELLOW} |${YELLOW} restart ${YELLOW} | main ${YELLOW} |loop2 ${YELLOW} | blocks ${YELLOW} | debug ${RESET}"
-echo
+## Server screens
+#colored_message "Server screens:"
+#echo -e "${YELLOW}To ${GREEN}Start${YELLOW} | ${RED}stop${YELLOW} | ${YELLOW}restart${YELLOW} | a screen use the following command.${RESET}"
+#echo
+#echo -e "${YELLOW}screens${GREEN} start ${YELLOW} |${RED} stop ${YELLOW} |${YELLOW} restart ${YELLOW} | main ${YELLOW} |loop2 ${YELLOW} | blocks ${YELLOW} | debug ${RESET}"
+#echo
 
 # Reload hint
 colored_message "To reload this page just type: ${GREEN}motd${RESET}"
