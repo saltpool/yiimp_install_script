@@ -1077,6 +1077,12 @@
     sudo mkdir /etc/update-motd.d/
     sudo cp yiimp_install_script/conf/motd/* /etc/update-motd.d/
     sudo chmod +x /etc/update-motd.d/*
+
+    if [[ $poolname == "" ]]
+    then
+       poolname="Saltpool"
+    fi
+     
     sudo sed -i 's/xxxxxx/'$poolname'/' /etc/update-motd.d/00-header
     echo '
     clear
