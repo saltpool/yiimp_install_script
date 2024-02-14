@@ -1090,6 +1090,9 @@
     ' | sudo -E tee /usr/bin/motd >/dev/null 2>&1
     sudo chmod +x /usr/bin/motd
     
+    sudo cp yiimp_install_script/utils/screens /usr/bin/
+    sudo chmod +x /usr/bin/screens 
+
     #Donations
     echo 'BTCDON="16uNjqH5yqY4JaMTHtzddAHP2PfXYTGjhV"
     LTCDON="LYB73E44CvijJXXCT1vEYYcnJstaKNriWv"
