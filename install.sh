@@ -1072,7 +1072,7 @@
     sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #MOTD
-    apt_install lsb-release figlet update-motd landscape-common update-notifier-common
+    apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat
     sudo rm -r /etc/update-motd.d/
     sudo mkdir /etc/update-motd.d/
     sudo cp yiimp_install_script/conf/motd/* /etc/update-motd.d/
@@ -1083,9 +1083,6 @@
     run-parts /etc/update-motd.d/ | sudo tee /etc/motd
     ' | sudo -E tee /usr/bin/motd >/dev/null 2>&1
     sudo chmod +x /usr/bin/motd
-
-    cd /var
-    sudo ln -s website/var/www/'"${server_name}"'/html/web website
     
     #Donations
     echo 'BTCDON="16uNjqH5yqY4JaMTHtzddAHP2PfXYTGjhV"
