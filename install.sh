@@ -43,8 +43,12 @@
     sudo chmod +x /etc/screen-stratum.sh
 
     source conf/functions.sh
+    
+    apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat
 
     clear
+    figlet -f slant -w 100 "Saltpool Yiimp Installer" | lolcat -f
+
     echo
     echo -e "$GREEN************************************************************************$COL_RESET"
     echo -e "$GREEN Yiimp Install Script $script_version $COL_RESET"
@@ -1072,7 +1076,6 @@
     sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #MOTD
-    apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat
     sudo rm -r /etc/update-motd.d/
     sudo mkdir /etc/update-motd.d/
     sudo cp yiimp_install_script/conf/motd/* /etc/update-motd.d/
