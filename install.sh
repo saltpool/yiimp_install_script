@@ -43,7 +43,8 @@
     sudo chmod +x /etc/screen-stratum.sh
 
     source conf/functions.sh
-    
+
+    hide_output sudo apt -y update
     apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat
 
     clear
@@ -65,7 +66,7 @@
     sleep 3
 
     sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
-    hide_output sudo apt -y update
+    
     hide_output sudo apt -y upgrade
     hide_output sudo apt -y autoremove
     apt_install software-properties-common
