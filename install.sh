@@ -256,7 +256,7 @@
     hide_output sudo ufw allow ssh
     hide_output sudo ufw allow http
     hide_output sudo ufw allow https
-    hide_output sudo ufw allow 3333/tcp
+    #hide_output sudo ufw allow 3333/tcp
     hide_output sudo ufw --force enable
     sleep 5
     sudo systemctl status ufw | sed -n "1,3p"
