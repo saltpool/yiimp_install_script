@@ -165,7 +165,7 @@
     apt_install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli \
     php8.2-cgi php-pear imagemagick libruby php8.2-curl php8.2-intl php8.2-pspell mcrypt\
     recode php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl memcached php-imagick php-php-gettext php8.2-zip php8.2-mbstring \
-    libpsl-dev libnghttp2-dev php8.2-memcache php8.2-memcached
+    libpsl-dev libnghttp2-dev php8.2-memcache php8.2-memcached net-tools
     else  
      echo -e "$RED Aborting, wrong O/S. Must be Ubuntu 22.04."
      exit 1
