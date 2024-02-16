@@ -1067,7 +1067,7 @@
 
     #fix error screen main "service"
     sudo sed -i 's/service $webserver start/sudo service $webserver start/g' /var/web/yaamp/modules/thread/CronjobController.php
-    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php	f
+    sudo sed -i 's/service nginx stop/sudo service nginx stop/g' /var/web/yaamp/modules/thread/CronjobController.php
 
     sudo mkdir -p /home/crypto-data/wallets
     sudo chown -R ${whoami}:${whoami} /home/crypto-data/
