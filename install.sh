@@ -92,7 +92,7 @@
     read -e -p "Enter the name of your pool (a general name, not the domain, e.g., Saltpool: " poolname
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N]: " BTC
-    read -e -p "Please enter a new location for /site/adminRights. This is to customize the Admin Panel entrance url (e.g. AdminPanel): " admin_panel
+    read -e -p "Please enter a new location for /site/AdminPanel, if required. This is to customize the Admin Panel entrance url (e.g. myControlPanel): " admin_panel
     read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel): " Public
     read -e -p "Install Fail2ban? [Y/n]: " install_fail2ban
     read -e -p "Install UFW and configure ports? [Y/n]: " UFW
