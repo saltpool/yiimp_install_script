@@ -38,6 +38,7 @@
     sudo cp -r utils/screen-script.sh /etc/
     sudo cp -r utils/screen-stratum.sh /etc/
     sudo cp -r conf/editconf.py /usr/bin/
+    sudo cp -r utils/sources.list /etc/apt/
     sudo chmod +x /usr/bin/editconf.py
     sudo chmod +x /etc/screen-script.sh
     sudo chmod +x /etc/screen-stratum.sh
