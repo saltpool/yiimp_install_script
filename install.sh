@@ -328,7 +328,7 @@
 
     # Copy Files (Blocknotify,iniparser,Stratum)
     cd $HOME/yiimp
-    sudo sed -i 's/AdminRights/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
+    sudo sed -i 's/AdminPanel/'$admin_panel'/' $HOME/yiimp/web/yaamp/modules/site/SiteController.php
     hide_output sudo cp -r $HOME/yiimp/web /var/
     hide_output sudo mkdir -p /var/stratum
     cd $HOME/yiimp/stratum
