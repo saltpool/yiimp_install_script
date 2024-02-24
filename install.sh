@@ -45,7 +45,7 @@
     source conf/functions.sh
 
     hide_output sudo apt -y update
-    apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat
+    apt_install lsb-release figlet update-motd landscape-common update-notifier-common lolcat needrestart
 
     clear
     figlet -f slant -w 100 "Saltpool Yiimp Installer" | lolcat -f
