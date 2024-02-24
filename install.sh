@@ -864,7 +864,7 @@
     /* Sample config file to put in /etc/yiimp/keys.php */
     define('"'"'YIIMP_MYSQLDUMP_USER'"'"', '"'"'panel'"'"');
     define('"'"'YIIMP_MYSQLDUMP_PASS'"'"', '"'"''"${password}"''"'"');
-    define('"'"'YIIMP_MYSQLDUMP_PATH'"'"', '"'"''"/var/yiimp/sauv"''"'"');
+    define('"'"'YIIMP_MYSQLDUMP_PATH'"'"', '"'"''"/home/crypto-data/backups"''"'"');
     /* Keys required to create/cancel orders and access your balances/deposit addresses */
     define('"'"'EXCH_BITTREX_SECRET'"'"', '"'"''"'"');
     define('"'"'EXCH_BITSTAMP_SECRET'"'"','"'"''"'"');
@@ -1055,7 +1055,7 @@
     sudo chgrp www-data /var/stratum -R
     sudo chmod 775 /var/stratum
 
-    sudo mkdir -p /var/yiimp/sauv
+    sudo mkdir -p /home/crypto-data/backups
     sudo chgrp www-data /var/yiimp -R
     sudo chmod 775 /var/yiimp -R
 
@@ -1073,7 +1073,7 @@
     sudo chown -R ${whoami}:${whoami} /home/crypto-data/
 
     #fix error screen main "backup sql frontend"
-    sudo sed -i "s|/root/backup|/var/yiimp/sauv|g" /var/web/yaamp/core/backend/system.php
+    sudo sed -i "s|/root/backup|/home/crypto-data/backups|g" /var/web/yaamp/core/backend/system.php
     sudo sed -i '14d' /var/web/yaamp/defaultconfig.php
 
     #MOTD
