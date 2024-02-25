@@ -1057,8 +1057,8 @@
     sudo chmod 775 /var/stratum
 
     sudo mkdir -p /home/crypto-data/backups
-    sudo chgrp www-data /var/yiimp -R
-    sudo chmod 775 /var/yiimp -R
+    sudo chgrp www-data /home/crypto-data/backups -R
+    sudo chmod 775 /home/crypto-data/backups -R
 
     #Add to contrab screen-script
     (crontab -l 2>/dev/null; echo "@reboot sleep 20 && /etc/screen-script.sh") | crontab -
