@@ -94,10 +94,10 @@
     read -e -p "Enter support email (e.g. admin@example.com): " EMAIL
     read -e -p "Set Pool to AutoExchange? i.e. mine any coin with BTC address? [y/N]: " BTC
     read -e -p "Please enter a new location for /site/AdminPanel, if required. This is to customize the Admin Panel entrance url (e.g. myControlPanel): " admin_panel
-    read -e -p "Enter the public IP of the system you will use to access the admin panel (IP of YOUR PC/internet connection where need to be access to Panel): " Public
+    read -e -p "Public IP of the system you will use to access the admin panel from (IP of YOUR PC/internet connection, NOT the VPS, NOT a private IP): " Public
     read -e -p "Install Fail2ban? [Y/n]: " install_fail2ban
     read -e -p "Install UFW and configure ports? [Y/n]: " UFW
-    read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name pointed to this server prior to running the script!! [Y/n]: " ssl_install
+    read -e -p "Install LetsEncrypt SSL? IMPORTANT! You MUST have your domain name DNS pointed to this server prior to running the script!! [Y/n]: " ssl_install
 
     # Installing Nginx
     echo
@@ -195,7 +195,7 @@
     # Installing packages to compile crypto currency:
     echo
     echo
-    echo -e "$CYAN => Installing Package to compile crypto currency $COL_RESET"
+    echo -e "$CYAN => Installing Packages to compile crypto currency $COL_RESET"
     sleep 3
 
     apt_install software-properties-common build-essential
@@ -888,7 +888,7 @@
     # Peforming the SQL import
     echo
     echo
-    echo -e "$CYAN => Database 'yiimpfrontend' and users 'panel' and 'stratum' created with password $password and $password2, will be saved for you $COL_RESET"
+    echo -e "$CYAN => Database 'yiimpfrontend' and users 'panel' and 'stratum' created with password $password and $password2, will be saved for you in ~/.my.cnf $COL_RESET"
     echo
     echo -e "Performing the SQL import"
     echo
