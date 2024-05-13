@@ -898,7 +898,7 @@
     cd yiimp/sql
 
     # Import sql dump
-    sudo zcat yiimp-import.sql.gz | sudo mysql --defaults-group-suffix=host1 --defaults-file=/home/${whoami}/.my.cnf
+    sudo zcat yiimp-import.sql.gz | sudo mysql -u root -p=${rootpasswd} yiimpfrontend
     echo -e "$GREEN Done...$COL_RESET"
 
     # Generating a basic Yiimp serverconfig.php
